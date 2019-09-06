@@ -38,7 +38,7 @@ RELEASE_DIR="release"
 rm -rf "${RELEASE_DIR}"
 for os in Darwin Linux; do
   for arch in x86_64; do
-    for binary_name in protoc-gen-twirp protoc-gen-twirp_python; do
+    for binary_name in protoc-gen-twirk protoc-gen-twirk_python; do
       BINARY="${RELEASE_DIR}/${binary_name}-${os}-${arch}"
       CGO_ENABLED=0 GOOS=$(goos "${os}") GOARCH=$(goarch "${arch}") \
         go build -a -installsuffix cgo -o "${BINARY}" \

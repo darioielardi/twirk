@@ -8,5 +8,5 @@ set -euo pipefail
 # Append '/src' to every element in GOPATH.
 PROTOPATH=${GOPATH/://src:}/src
 
-protoc --twirp_out=paths=source_relative:. --go_out=paths=source_relative:. "$@"
-protoc --proto_path="${PROTOPATH}:." --python_out=. --twirp_python_out=. "$@"
+protoc --twirk_out=paths=source_relative:. --go_out=paths=source_relative:. "$@"
+protoc --proto_path="${PROTOPATH}:." --python_out=. --twirk_python_out=. "$@"

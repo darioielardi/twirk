@@ -51,9 +51,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/darioielardi/twirk/internal/gen/stringutils"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
-	"github.com/twitchtv/twirp/internal/gen/stringutils"
 )
 
 // Each type we import as a protocol buffer (other than FileDescriptorProto) needs
@@ -414,8 +414,8 @@ func wrapServices(file *descriptor.FileDescriptorProto) (sl []*ServiceDescriptor
 		sd := &ServiceDescriptor{
 			common:                 common{file},
 			ServiceDescriptorProto: svc,
-			Index: i,
-			Path:  fmt.Sprintf("%d,%d", servicePath, i),
+			Index:                  i,
+			Path:                   fmt.Sprintf("%d,%d", servicePath, i),
 		}
 		for j, method := range svc.Method {
 			md := &MethodDescriptor{
@@ -469,10 +469,10 @@ type FileDescriptor struct {
 // inside the generated package.
 //
 // protoc-gen-go writes its own version of this file, but so does
-// protoc-gen-gogo - with a different name! Twirp aims to be compatible with
+// protoc-gen-gogo - with a different name! twirk aims to be compatible with
 // both; the simplest way forward is to write the file descriptor again as
 // another variable that we control.
-func (d *FileDescriptor) VarName() string { return fmt.Sprintf("twirpFileDescriptor%d", d.Index) }
+func (d *FileDescriptor) VarName() string { return fmt.Sprintf("twirkFileDescriptor%d", d.Index) }
 
 func (d *FileDescriptor) PackageComments() string {
 	if loc, ok := d.Comments[strconv.Itoa(packagePath)]; ok {

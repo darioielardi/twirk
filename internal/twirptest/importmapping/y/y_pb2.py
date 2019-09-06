@@ -17,9 +17,9 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='y/y.proto',
-  package='twirp.internal.twirptest.importmapping.y',
+  package='twirk.internal.twirktest.importmapping.y',
   syntax='proto3',
-  serialized_pb=_b('\n\ty/y.proto\x12(twirp.internal.twirptest.importmapping.y\"\x06\n\x04MsgYb\x06proto3')
+  serialized_pb=_b('\n\ty/y.proto\x12(twirk.internal.twirktest.importmapping.y\"\x06\n\x04MsgYb\x06proto3')
 )
 
 
@@ -27,7 +27,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _MSGY = _descriptor.Descriptor(
   name='MsgY',
-  full_name='twirp.internal.twirptest.importmapping.y.MsgY',
+  full_name='twirk.internal.twirktest.importmapping.y.MsgY',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -54,7 +54,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 MsgY = _reflection.GeneratedProtocolMessageType('MsgY', (_message.Message,), dict(
   DESCRIPTOR = _MSGY,
   __module__ = 'y.y_pb2'
-  # @@protoc_insertion_point(class_scope:twirp.internal.twirptest.importmapping.y.MsgY)
+  # @@protoc_insertion_point(class_scope:twirk.internal.twirktest.importmapping.y.MsgY)
   ))
 _sym_db.RegisterMessage(MsgY)
 

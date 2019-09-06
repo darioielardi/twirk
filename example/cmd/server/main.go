@@ -20,16 +20,16 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/twitchtv/twirp"
-	"github.com/twitchtv/twirp/example"
-	"github.com/twitchtv/twirp/hooks/statsd"
+	"github.com/darioielardi/twirk"
+	"github.com/darioielardi/twirk/example"
+	"github.com/darioielardi/twirk/hooks/statsd"
 )
 
 type randomHaberdasher struct{}
 
 func (h *randomHaberdasher) MakeHat(ctx context.Context, size *example.Size) (*example.Hat, error) {
 	if size.Inches <= 0 {
-		return nil, twirp.InvalidArgumentError("Inches", "I can't make a hat that small!")
+		return nil, twirk.InvalidArgumentError("Inches", "I can't make a hat that small!")
 	}
 	colors := []string{"white", "black", "brown", "red", "blue"}
 	names := []string{"bowler", "baseball cap", "top hat", "derby"}

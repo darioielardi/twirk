@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/twitchtv/twirp"
-	"github.com/twitchtv/twirp/internal/twirptest"
+	"github.com/darioielardi/twirk"
+	"github.com/darioielardi/twirk/internal/twirktest"
 )
 
 func TestSanitize(t *testing.T) {
@@ -51,18 +51,18 @@ func TestTimingHooks(t *testing.T) {
 	server, client := serverAndClient(hooks)
 	defer server.Close()
 
-	_, err := client.MakeHat(context.Background(), &twirptest.Size{})
+	_, err := client.MakeHat(context.Background(), &twirktest.Size{})
 	if err != nil {
-		t.Fatalf("twirptest Client err=%q", err)
+		t.Fatalf("twirktest Client err=%q", err)
 	}
 
 	expectedIncrements := []string{
-		"twirp.total.requests",
-		"twirp.MakeHat.requests",
-		"twirp.total.responses",
-		"twirp.MakeHat.responses",
-		"twirp.status_codes.total.200",
-		"twirp.status_codes.MakeHat.200",
+		"twirk.total.requests",
+		"twirk.MakeHat.requests",
+		"twirk.total.responses",
+		"twirk.MakeHat.responses",
+		"twirk.status_codes.total.200",
+		"twirk.status_codes.MakeHat.200",
 	}
 	for _, inc := range expectedIncrements {
 		if !statter.receivedInc(inc) {
@@ -70,10 +70,10 @@ func TestTimingHooks(t *testing.T) {
 		}
 	}
 	expectedTimers := []string{
-		"twirp.all_methods.response",
-		"twirp.MakeHat.response",
-		"twirp.status_codes.all_methods.200",
-		"twirp.status_codes.MakeHat.200",
+		"twirk.all_methods.response",
+		"twirk.MakeHat.response",
+		"twirk.status_codes.all_methods.200",
+		"twirk.status_codes.MakeHat.200",
 	}
 	for _, tim := range expectedTimers {
 		if !statter.receivedTiming(tim) {
@@ -82,8 +82,8 @@ func TestTimingHooks(t *testing.T) {
 	}
 }
 
-func serverAndClient(hooks *twirp.ServerHooks) (*httptest.Server, twirptest.Haberdasher) {
-	return twirptest.ServerAndClient(twirptest.NoopHatmaker(), hooks)
+func serverAndClient(hooks *twirk.ServerHooks) (*httptest.Server, twirktest.Haberdasher) {
+	return twirktest.ServerAndClient(twirktest.NoopHatmaker(), hooks)
 }
 
 type increment struct {

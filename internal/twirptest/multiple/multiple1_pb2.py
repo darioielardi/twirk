@@ -17,9 +17,9 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='multiple1.proto',
-  package='twirp.internal.twirptest.multiple',
+  package='twirk.internal.twirktest.multiple',
   syntax='proto3',
-  serialized_pb=_b('\n\x0fmultiple1.proto\x12!twirp.internal.twirptest.multiple\"\x06\n\x04Msg12`\n\x04Svc1\x12X\n\x04Send\x12\'.twirp.internal.twirptest.multiple.Msg1\x1a\'.twirp.internal.twirptest.multiple.Msg1B\nZ\x08multipleb\x06proto3')
+  serialized_pb=_b('\n\x0fmultiple1.proto\x12!twirk.internal.twirktest.multiple\"\x06\n\x04Msg12`\n\x04Svc1\x12X\n\x04Send\x12\'.twirk.internal.twirktest.multiple.Msg1\x1a\'.twirk.internal.twirktest.multiple.Msg1B\nZ\x08multipleb\x06proto3')
 )
 
 
@@ -27,7 +27,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _MSG1 = _descriptor.Descriptor(
   name='Msg1',
-  full_name='twirp.internal.twirptest.multiple.Msg1',
+  full_name='twirk.internal.twirktest.multiple.Msg1',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -54,7 +54,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Msg1 = _reflection.GeneratedProtocolMessageType('Msg1', (_message.Message,), dict(
   DESCRIPTOR = _MSG1,
   __module__ = 'multiple1_pb2'
-  # @@protoc_insertion_point(class_scope:twirp.internal.twirptest.multiple.Msg1)
+  # @@protoc_insertion_point(class_scope:twirk.internal.twirktest.multiple.Msg1)
   ))
 _sym_db.RegisterMessage(Msg1)
 
@@ -64,7 +64,7 @@ DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b
 
 _SVC1 = _descriptor.ServiceDescriptor(
   name='Svc1',
-  full_name='twirp.internal.twirptest.multiple.Svc1',
+  full_name='twirk.internal.twirktest.multiple.Svc1',
   file=DESCRIPTOR,
   index=0,
   options=None,
@@ -73,7 +73,7 @@ _SVC1 = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='Send',
-    full_name='twirp.internal.twirptest.multiple.Svc1.Send',
+    full_name='twirk.internal.twirktest.multiple.Svc1.Send',
     index=0,
     containing_service=None,
     input_type=_MSG1,

@@ -17,8 +17,8 @@ import (
 	"path"
 	"strings"
 
+	"github.com/darioielardi/twirk/internal/gen/stringutils"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
-	"github.com/twitchtv/twirp/internal/gen/stringutils"
 )
 
 // goPackageOption interprets the file's go_package option.
@@ -65,12 +65,12 @@ func goPackageName(f *descriptor.FileDescriptorProto) (name string, explicit boo
 }
 
 // goFileName returns the output name for the generated Go file.
-func (t *twirp) goFileName(f *descriptor.FileDescriptorProto) string {
+func (t *twirk) goFileName(f *descriptor.FileDescriptorProto) string {
 	name := *f.Name
 	if ext := path.Ext(name); ext == ".proto" || ext == ".protodevel" {
 		name = name[:len(name)-len(ext)]
 	}
-	name += ".twirp.go"
+	name += ".twirk.go"
 	if t.sourceRelativePaths {
 		return name
 	}

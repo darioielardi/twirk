@@ -20,9 +20,9 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/darioielardi/twirk"
+	"github.com/darioielardi/twirk/clientcompat/internal/clientcompat"
 	"github.com/golang/protobuf/proto"
-	"github.com/twitchtv/twirp"
-	"github.com/twitchtv/twirp/clientcompat/internal/clientcompat"
 )
 
 func main() {
@@ -60,7 +60,7 @@ func doNoop(client clientcompat.CompatService, req []byte) error {
 	}
 	resp, err := client.NoopMethod(context.Background(), &e)
 	if err != nil {
-		errCode := err.(twirp.Error).Code()
+		errCode := err.(twirk.Error).Code()
 		os.Stderr.Write([]byte(errCode))
 	} else {
 		respBytes, err := proto.Marshal(resp)
@@ -80,7 +80,7 @@ func doMethod(client clientcompat.CompatService, req []byte) error {
 	}
 	resp, err := client.Method(context.Background(), &r)
 	if err != nil {
-		errCode := err.(twirp.Error).Code()
+		errCode := err.(twirk.Error).Code()
 		os.Stderr.Write([]byte(errCode))
 	} else {
 		respBytes, err := proto.Marshal(resp)

@@ -11,6 +11,6 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-// package twirptest provides servers for use in tests and for testing
-// the cleanliness of the generated output of protoc-gen-twirp.
-package twirptest
+// package twirktest provides servers for use in tests and for testing
+// the cleanliness of the generated output of protoc-gen-twirk.
+package twirktest

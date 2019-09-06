@@ -4,25 +4,25 @@ title: "Errors"
 sidebar_label: "Errors"
 ---
 
-You probably noticed that all methods on a Twirp-made interface return `(...,
+You probably noticed that all methods on a twirk-made interface return `(...,
 error)`.
 
-Twirp clients always return errors that can be cast to `twirp.Error`. Even
-transport-level errors will be `twirp.Error`s.
+twirk clients always return errors that can be cast to `twirk.Error`. Even
+transport-level errors will be `twirk.Error`s.
 
-Twirp server implementations can return regular errors too, but those
-will be wrapped with `twirp.InternalErrorWith(err)`, so they are also
-`twirp.Error` values when received by the clients.
+twirk server implementations can return regular errors too, but those
+will be wrapped with `twirk.InternalErrorWith(err)`, so they are also
+`twirk.Error` values when received by the clients.
 
 Check the [Errors Spec](spec_v5.md) for more information on error
 codes and the wire protocol.
 
-Also don't be afraid to open the [source code](https://github.com/twitchtv/twirp/blob/master/errors.go)
+Also don't be afraid to open the [source code](https://github.com/darioielardi/twirk/blob/master/errors.go)
 for details, it is pretty straightforward.
 
-### twirp.Error interface
+### twirk.Error interface
 
-Twirp Errors have this interface:
+twirk Errors have this interface:
 ```go
 type Error interface {
     Code() ErrorCode        // identifies a valid error type
@@ -32,15 +32,15 @@ type Error interface {
     Meta(key string) string                // get metadata value
     MetaMap() map[string]string            // see all metadata
 
-    Error() string // as an error returns "twirp error <Code>: <Msg>"
+    Error() string // as an error returns "twirk error <Code>: <Msg>"
 }
 ```
 
 ### Error Codes
 
-Each error code is defined by a constant in the `twirp` package:
+Each error code is defined by a constant in the `twirk` package:
 
-| twirp.ErrorCode    | JSON/String         |  HTTP status code
+| twirk.ErrorCode    | JSON/String         |  HTTP status code
 | ------------------ | ------------------- | ------------------
 | Canceled           | canceled            | 408 RequestTimeout
 | Unknown            | unknown             | 500 Internal Server Error
@@ -65,15 +65,15 @@ For more information on each code, see the [Errors Spec](spec_v5.md).
 
 ### HTTP Errors from Intermediary Proxies
 
-It is also possible for Twirp Clients to receive HTTP responses with non-200 status
+It is also possible for twirk Clients to receive HTTP responses with non-200 status
 codes but without an expected error message. For example, proxies or load balancers
 might return a "503 Service Temporarily Unavailable" body, which cannot be
-deserialized into a Twirp error.
+deserialized into a twirk error.
 
-In these cases, generated Go clients will return twirp.Errors with a code which
+In these cases, generated Go clients will return twirk.Errors with a code which
 depends upon the HTTP status of the invalid response:
 
-| HTTP status code         |  Twirp Error Code
+| HTTP status code         |  twirk Error Code
 | ------------------------ | ------------------
 | 3xx (redirects)          | Internal
 | 400 Bad Request          | Internal
@@ -90,7 +90,7 @@ Additional metadata is added to make it easy to identify intermediary errors:
 
 * `"http_error_from_intermediary": "true"`
 * `"status_code": string` (original status code on the HTTP response, e.g. `"500"`).
-* `"body": string` (original non-Twirp error response as string).
+* `"body": string` (original non-twirk error response as string).
 * `"location": url-string` (only on 3xx responses, matching the `Location` header).
 
 ### Metadata
@@ -99,7 +99,7 @@ You can add arbitrary string metadata to any error. For example, the service may
 
 ```go
 if unavailable {
-    twerr := twirp.NewError(twirp.Unavailable, "taking a nap ...")
+    twerr := twirk.NewError(twirk.Unavailable, "taking a nap ...")
     twerr = twerr.WithMeta("retryable", "true")
     twerr = twerr.WithMeta("retry_after", "15s")
     return nil, twerr
@@ -109,7 +109,7 @@ if unavailable {
 And the metadata is available on the client:
 
 ```go
-if twerr.Code() == twirp.Unavailable {
+if twerr.Code() == twirk.Unavailable {
     if twerr.Meta("retryable") != "" {
         // do stuff... maybe retry after twerr.Meta("retry_after")
     }

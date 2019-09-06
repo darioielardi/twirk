@@ -4,7 +4,7 @@ title: "cURL"
 sidebar_label: "cURL"
 ---
 
-Twirp allows you to cURL your service with either Protobuf or JSON.
+twirk allows you to cURL your service with either Protobuf or JSON.
 
 ## Example
 
@@ -31,15 +31,15 @@ message Hat {
 
 ```sh
 echo "inches:10" \
-	| protoc --proto_path=$GOPATH/src --encode twirp.example.haberdasher.Size ./rpc/haberdasher/service.proto \
+	| protoc --proto_path=$GOPATH/src --encode twirk.example.haberdasher.Size ./rpc/haberdasher/service.proto \
 	| curl -s --request POST \
                   --header "Content-Type: application/protobuf" \
                   --data-binary @-
-                  http://localhost:8080/twirp/twirp.example.haberdasher.Haberdasher/MakeHat \
-	| protoc --proto_path=$GOPATH/src --decode twirp.example.haberdasher.Hat ./rpc/haberdasher/service.proto
+                  http://localhost:8080/twirk/twirk.example.haberdasher.Haberdasher/MakeHat \
+	| protoc --proto_path=$GOPATH/src --decode twirk.example.haberdasher.Hat ./rpc/haberdasher/service.proto
 ```
 
-We signal Twirp that we're sending Protobuf data by setting the `Content-Type` as `application/protobuf`.
+We signal twirk that we're sending Protobuf data by setting the `Content-Type` as `application/protobuf`.
 
 The request is:
 
@@ -47,7 +47,7 @@ The request is:
 inches:10
 ```
 
-The reply from Twirp would look something like this:
+The reply from twirk would look something like this:
 
 ```
 inches:1
@@ -59,13 +59,13 @@ name:"bowler"
 
 ```sh
 curl --request "POST" \
-     --location "http://localhost:8080/twirp/twirp.example.haberdasher.Haberdasher/MakeHat" \
+     --location "http://localhost:8080/twirk/twirk.example.haberdasher.Haberdasher/MakeHat" \
      --header "Content-Type:application/json" \
      --data '{"inches": 10}' \
      --verbose
 ```
 
-We signal Twirp that we're sending JSON data by setting the `Content-Type` as `application/json`.
+We signal twirk that we're sending JSON data by setting the `Content-Type` as `application/json`.
 
 The request is:
 
@@ -73,7 +73,7 @@ The request is:
 {"inches": 10}
 ```
 
-The JSON response from Twirp would look something like this:
+The JSON response from twirk would look something like this:
 
 ```json
 {"inches":1, "color":"black", "name":"bowler"}

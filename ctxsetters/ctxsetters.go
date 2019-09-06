@@ -11,11 +11,11 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-// Package ctxsetters is an implementation detail for twirp generated code, used
+// Package ctxsetters is an implementation detail for twirk generated code, used
 // by the generated servers to set values in contexts for later access with the
-// twirp package's accessors.
+// twirk package's accessors.
 //
-// Do not use ctxsetters outside of twirp's generated code.
+// Do not use ctxsetters outside of twirk's generated code.
 package ctxsetters
 
 import (
@@ -23,7 +23,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/twitchtv/twirp/internal/contextkeys"
+	"github.com/darioielardi/twirk/internal/contextkeys"
 )
 
 func WithMethodName(ctx context.Context, name string) context.Context {

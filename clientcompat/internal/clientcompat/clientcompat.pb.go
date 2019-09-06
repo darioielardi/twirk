@@ -156,7 +156,7 @@ func (m *Resp) GetV() int32 {
 
 type ClientCompatMessage struct {
 	ServiceAddress       string                                  `protobuf:"bytes,1,opt,name=service_address,json=serviceAddress,proto3" json:"service_address,omitempty"`
-	Method               ClientCompatMessage_CompatServiceMethod `protobuf:"varint,2,opt,name=method,proto3,enum=twirp.clientcompat.ClientCompatMessage_CompatServiceMethod" json:"method,omitempty"`
+	Method               ClientCompatMessage_CompatServiceMethod `protobuf:"varint,2,opt,name=method,proto3,enum=twirk.clientcompat.ClientCompatMessage_CompatServiceMethod" json:"method,omitempty"`
 	Request              []byte                                  `protobuf:"bytes,3,opt,name=request,proto3" json:"request,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                `json:"-"`
 	XXX_unrecognized     []byte                                  `json:"-"`
@@ -210,11 +210,11 @@ func (m *ClientCompatMessage) GetRequest() []byte {
 }
 
 func init() {
-	proto.RegisterEnum("twirp.clientcompat.ClientCompatMessage_CompatServiceMethod", ClientCompatMessage_CompatServiceMethod_name, ClientCompatMessage_CompatServiceMethod_value)
-	proto.RegisterType((*Empty)(nil), "twirp.clientcompat.Empty")
-	proto.RegisterType((*Req)(nil), "twirp.clientcompat.Req")
-	proto.RegisterType((*Resp)(nil), "twirp.clientcompat.Resp")
-	proto.RegisterType((*ClientCompatMessage)(nil), "twirp.clientcompat.ClientCompatMessage")
+	proto.RegisterEnum("twirk.clientcompat.ClientCompatMessage_CompatServiceMethod", ClientCompatMessage_CompatServiceMethod_name, ClientCompatMessage_CompatServiceMethod_value)
+	proto.RegisterType((*Empty)(nil), "twirk.clientcompat.Empty")
+	proto.RegisterType((*Req)(nil), "twirk.clientcompat.Req")
+	proto.RegisterType((*Resp)(nil), "twirk.clientcompat.Resp")
+	proto.RegisterType((*ClientCompatMessage)(nil), "twirk.clientcompat.ClientCompatMessage")
 }
 
 func init() { proto.RegisterFile("clientcompat.proto", fileDescriptor_a62893c130d046c3) }

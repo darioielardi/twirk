@@ -15,7 +15,7 @@ generate:
 test_all: setup test_core test_clients
 
 test_core: generate
-	$(RETOOL) do errcheck -blank ./internal/twirptest
+	$(RETOOL) do errcheck -blank ./internal/twirktest
 	go test -race $(shell go list ./... | grep -v /vendor/ | grep -v /_tools/)
 
 test_clients: test_go_client test_python_client
@@ -34,8 +34,8 @@ setup:
 release_gen:
 	git clean -xdf
 	docker run \
-		--volume "$(CURDIR):/go/src/github.com/twitchtv/twirp" \
-		--workdir "/go/src/github.com/twitchtv/twirp" \
+		--volume "$(CURDIR):/go/src/github.com/darioielardi/twirk" \
+		--workdir "/go/src/github.com/darioielardi/twirk" \
 		$(DOCKER_RELEASE_IMAGE) \
 		internal/release_gen.sh
 

@@ -18,9 +18,9 @@ import multiple1_pb2 as multiple1__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='multiple2.proto',
-  package='twirp.internal.twirptest.multiple',
+  package='twirk.internal.twirktest.multiple',
   syntax='proto3',
-  serialized_pb=_b('\n\x0fmultiple2.proto\x12!twirp.internal.twirptest.multiple\x1a\x0fmultiple1.proto\"\x06\n\x04Msg22\xcc\x01\n\x04Svc2\x12X\n\x04Send\x12\'.twirp.internal.twirptest.multiple.Msg2\x1a\'.twirp.internal.twirptest.multiple.Msg2\x12j\n\x16SamePackageProtoImport\x12\'.twirp.internal.twirptest.multiple.Msg1\x1a\'.twirp.internal.twirptest.multiple.Msg1B\nZ\x08multipleb\x06proto3')
+  serialized_pb=_b('\n\x0fmultiple2.proto\x12!twirk.internal.twirktest.multiple\x1a\x0fmultiple1.proto\"\x06\n\x04Msg22\xcc\x01\n\x04Svc2\x12X\n\x04Send\x12\'.twirk.internal.twirktest.multiple.Msg2\x1a\'.twirk.internal.twirktest.multiple.Msg2\x12j\n\x16SamePackageProtoImport\x12\'.twirk.internal.twirktest.multiple.Msg1\x1a\'.twirk.internal.twirktest.multiple.Msg1B\nZ\x08multipleb\x06proto3')
   ,
   dependencies=[multiple1__pb2.DESCRIPTOR,])
 
@@ -29,7 +29,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _MSG2 = _descriptor.Descriptor(
   name='Msg2',
-  full_name='twirp.internal.twirptest.multiple.Msg2',
+  full_name='twirk.internal.twirktest.multiple.Msg2',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -56,7 +56,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Msg2 = _reflection.GeneratedProtocolMessageType('Msg2', (_message.Message,), dict(
   DESCRIPTOR = _MSG2,
   __module__ = 'multiple2_pb2'
-  # @@protoc_insertion_point(class_scope:twirp.internal.twirptest.multiple.Msg2)
+  # @@protoc_insertion_point(class_scope:twirk.internal.twirktest.multiple.Msg2)
   ))
 _sym_db.RegisterMessage(Msg2)
 
@@ -66,7 +66,7 @@ DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b
 
 _SVC2 = _descriptor.ServiceDescriptor(
   name='Svc2',
-  full_name='twirp.internal.twirptest.multiple.Svc2',
+  full_name='twirk.internal.twirktest.multiple.Svc2',
   file=DESCRIPTOR,
   index=0,
   options=None,
@@ -75,7 +75,7 @@ _SVC2 = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='Send',
-    full_name='twirp.internal.twirptest.multiple.Svc2.Send',
+    full_name='twirk.internal.twirktest.multiple.Svc2.Send',
     index=0,
     containing_service=None,
     input_type=_MSG2,
@@ -84,7 +84,7 @@ _SVC2 = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='SamePackageProtoImport',
-    full_name='twirp.internal.twirptest.multiple.Svc2.SamePackageProtoImport',
+    full_name='twirk.internal.twirktest.multiple.Svc2.SamePackageProtoImport',
     index=1,
     containing_service=None,
     input_type=multiple1__pb2._MSG1,

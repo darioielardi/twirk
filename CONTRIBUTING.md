@@ -1,6 +1,6 @@
 # Contributing #
 
-Thanks for helping make Twirp better! This is great!
+Thanks for helping make twirk better! This is great!
 
 First, if you have run into a bug, please file an issue. We try to get back to
 issue reporters within a day or two. We might be able to help you right away.
@@ -11,7 +11,7 @@ and/or security@twitch.tv.
 Issues are also a good place to present experience reports or requests for new
 features.
 
-If you'd like to make changes to Twirp, read on:
+If you'd like to make changes to twirk, read on:
 
 ## Setup Requirements ##
 
@@ -24,17 +24,17 @@ Generally you want to make changes and run `make`, which will install all
 dependencies we know about, build the core, and run all of the tests that we
 have against all of the languages we support.
 
-Most tests of the Go server are in `internal/twirptest/service_test.go`. Tests
+Most tests of the Go server are in `internal/twirktest/service_test.go`. Tests
 of cross-language clients are in the [clientcompat](./clientcompat) directory.
 
 ## Contributing Code ##
 
-Twirp uses github pull requests. Fork, hack away at your changes, run the test
+twirk uses github pull requests. Fork, hack away at your changes, run the test
 suite with `make`, and submit a PR.
 
 ## Contributing Documentation ##
 
-Twirp's docs are generated with [Docusaurus](https://docusaurus.io/). You can
+twirk's docs are generated with [Docusaurus](https://docusaurus.io/). You can
 safely edit anything inside the [docs](./docs) directory, adding new pages or
 editing them. You can edit the sidebar by editing
 [website/sidebars.json](./website/sidebars.json).
@@ -51,7 +51,7 @@ Then, to render your changes, run docusaurus's local server. To do this:
 Releasing versions is the responsibility of the core maintainers. Most people
 don't need to know this stuff.
 
-Twirp uses [Semantic versioning](http://semver.org/): `v<major>.<minor>.<patch>`.
+twirk uses [Semantic versioning](http://semver.org/): `v<major>.<minor>.<patch>`.
 
  * Increment major if you're making a backwards-incompatible change.
  * Increment minor if you're adding a feature that's backwards-compatible.
@@ -60,7 +60,7 @@ Twirp uses [Semantic versioning](http://semver.org/): `v<major>.<minor>.<patch>`
 To make a release, remember to update the version number in
 [internal/gen/version.go](./internal/gen/version.go).
 
-Twirp uses Github releases. To make a new release:
+twirk uses Github releases. To make a new release:
  1. Merge all changes that should be included in the release into the master
     branch.
  2. Update the version constant in `internal/gen/version.go`.
@@ -69,7 +69,7 @@ Twirp uses Github releases. To make a new release:
     origin --tags`
  5. Run `make release_gen` to generate release assets in the `release`
     directory. This requires Docker to be installed.
- 6. Go to Github https://github.com/twitchtv/twirp/releases and
+ 6. Go to Github https://github.com/darioielardi/twirk/releases and
     "Draft a new release".
  7. Make sure to document changes, specially when upgrade instructions are
     needed.
@@ -84,6 +84,6 @@ opensource-codeofconduct@amazon.com with any additional questions or comments.
 
 ## Licensing
 
-See the [LICENSE](https://github.com/twitchtv/twirp/blob/master/LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
+See the [LICENSE](https://github.com/darioielardi/twirk/blob/master/LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.
 
 We may ask you to sign a [Contributor License Agreement (CLA)](http://en.wikipedia.org/wiki/Contributor_License_Agreement) for larger changes.

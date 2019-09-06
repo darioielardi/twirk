@@ -1,38 +1,38 @@
-# Twirp Wire Protocol
+# twirk Wire Protocol
 
-This document defines the Twirp wire protocol over HTTP. The
+This document defines the twirk wire protocol over HTTP. The
 current protocol version is v5.
 
 ## Overview
 
-The Twirp wire protocol is a simple RPC protocol based on HTTP and
+The twirk wire protocol is a simple RPC protocol based on HTTP and
 Protocol Buffers (proto). The protocol uses HTTP URLs to specify the
 RPC endpoints, and sends/receives proto messages as HTTP
 request/response bodies.
 
-To use Twirp, developers first define their APIs using proto files,
-then use Twirp tools to generate the client and the server libraries.
-The generated libraries implement the Twirp wire protocol, using the
+To use twirk, developers first define their APIs using proto files,
+then use twirk tools to generate the client and the server libraries.
+The generated libraries implement the twirk wire protocol, using the
 standard HTTP library provided by the programming language runtime or
 the operating system. Once the client and the server are implemented,
 the client can communicate with the server by making RPC calls.
 
-The Twirp wire protocol supports both binary and JSON encodings of
+The twirk wire protocol supports both binary and JSON encodings of
 proto messages, and works with any HTTP client and any HTTP version.
 
 ### URLs
 
-In [ABNF syntax](https://tools.ietf.org/html/rfc5234), Twirp's URLs
+In [ABNF syntax](https://tools.ietf.org/html/rfc5234), twirk's URLs
 have the following format:
 
-**URL ::= Base-URL "/twirp/" [ Package "." ] Service "/" Method**
+**URL ::= Base-URL "/twirk/" [ Package "." ] Service "/" Method**
 
-The Twirp wire protocol uses HTTP URLs to specify the RPC
+The twirk wire protocol uses HTTP URLs to specify the RPC
 endpoints on the server for sending the requests. Such direct mapping
-makes the request routing simple and efficient. The Twirp URLs have
+makes the request routing simple and efficient. The twirk URLs have
 the following components.
 
-* **Base-URL** is the virtual location of a Twirp API server, which is
+* **Base-URL** is the virtual location of a twirk API server, which is
   typically published via API documentation or service discovery.
   Currently, it should only contain URL `scheme` and `authority`. For
   example, "https://example.com".
@@ -50,10 +50,10 @@ the following components.
 
 ### Requests
 
-Twirp always uses HTTP POST method to send requests, because it
+twirk always uses HTTP POST method to send requests, because it
 closely matches the semantics of RPC methods.
 
-The **Request-Headers** are normal HTTP headers. The Twirp wire
+The **Request-Headers** are normal HTTP headers. The twirk wire
 protocol uses the following headers.
 
 * **Content-Type** header indicates the proto message encoding, which
@@ -68,7 +68,7 @@ header.
 ### Responses
 
 The **Response-Headers** are just normal HTTP response headers. The
-Twirp wire protocol uses the following headers.
+twirk wire protocol uses the following headers.
 
 * **Content-Type** The value should be either "application/protobuf"
   or "application/json" to indicate the encoding of the response
@@ -106,7 +106,7 @@ message HelloResponse {
 **Proto Request**
 
 ```
-POST /twirp/example.echoer.Echo/Hello HTTP/1.1
+POST /twirk/example.echoer.Echo/Hello HTTP/1.1
 Host: example.com
 Content-Type: application/protobuf
 Content-Length: 15
@@ -117,7 +117,7 @@ Content-Length: 15
 **JSON Request**
 
 ```
-POST /twirp/example.echoer.Echo/Hello HTTP/1.1
+POST /twirk/example.echoer.Echo/Hello HTTP/1.1
 Host: example.com
 Content-Type: application/json
 Content-Length: 27
@@ -147,14 +147,14 @@ Content-Length: 27
 
 ## Errors
 
-Twirp error responses are always JSON-encoded, regardless of
+twirk error responses are always JSON-encoded, regardless of
 the request's Content-Type, with a corresponding
 `Content-Type: application/json` header. This ensures that
 the errors are human-readable in any setting.
 
-Twirp errors are a JSON object with three keys:
+twirk errors are a JSON object with three keys:
 
-* **code**: One of the Twirp error codes as a string.
+* **code**: One of the twirk error codes as a string.
 * **msg**: A human-readable message describing the error
   as a string.
 * **meta**: An object with string keys and values holding
@@ -171,4 +171,4 @@ Example:
 }
 ```
 
-For more information, see https://github.com/twitchtv/twirp/wiki/Errors.
+For more information, see https://github.com/darioielardi/twirk/wiki/Errors.

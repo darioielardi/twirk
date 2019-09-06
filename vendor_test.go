@@ -11,7 +11,7 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-package twirp
+package twirk
 
 import (
 	"go/build"
@@ -21,12 +21,12 @@ import (
 )
 
 func TestNoExternalDeps(t *testing.T) {
-	// Twirp commits its vendor directory so that 'go get' works for its main
-	// packages, but vendoring dependencies of the 'twirp' package could cause
+	// twirk commits its vendor directory so that 'go get' works for its main
+	// packages, but vendoring dependencies of the 'twirk' package could cause
 	// problems for users.
 	//
 	// The simplest way to make things safe is to have no non-stdlib dependencies
-	// in the twirp package.
+	// in the twirk package.
 
 	wd, err := os.Getwd()
 	if err != nil {
@@ -53,14 +53,14 @@ func TestNoExternalDeps(t *testing.T) {
 			if !strings.Contains(imported, ".") {
 				continue
 			}
-			// This is a non-stdlib package. It's okay if it's a twirp package - as
+			// This is a non-stdlib package. It's okay if it's a twirk package - as
 			// long as it doesn't have any external deps itself.
-			if strings.HasPrefix(imported, "github.com/twitchtv/twirp") {
+			if strings.HasPrefix(imported, "github.com/darioielardi/twirk") {
 				walkImports(imported)
 			} else {
 				t.Errorf("imported external dependency: %v, imported by %v", imported, pkgName)
 			}
 		}
 	}
-	walkImports("github.com/twitchtv/twirp")
+	walkImports("github.com/darioielardi/twirk")
 }

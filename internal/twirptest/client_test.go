@@ -11,7 +11,7 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-package twirptest
+package twirktest
 
 import (
 	"context"
@@ -24,8 +24,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/darioielardi/twirk"
 	"github.com/pkg/errors"
-	"github.com/twitchtv/twirp"
 )
 
 // reqInspector is a tool to check inspect HTTP Requests as they pass
@@ -104,16 +104,16 @@ func TestClientSetsRequestContext(t *testing.T) {
 			callback: func(req *http.Request) {
 				ctx := req.Context()
 
-				pkgName, exists := twirp.PackageName(ctx)
+				pkgName, exists := twirk.PackageName(ctx)
 				if !exists {
 					t.Error("packageName not found in context")
 					return
 				}
-				if pkgName != "twirp.internal.twirptest" {
-					t.Errorf("packageName has wrong value, have=%s, want=%s", pkgName, "twirp.internal.twirptest")
+				if pkgName != "twirk.internal.twirktest" {
+					t.Errorf("packageName has wrong value, have=%s, want=%s", pkgName, "twirk.internal.twirktest")
 				}
 
-				serviceName, exists := twirp.ServiceName(ctx)
+				serviceName, exists := twirk.ServiceName(ctx)
 				if !exists {
 					t.Error("serviceName not found in context")
 					return
@@ -122,7 +122,7 @@ func TestClientSetsRequestContext(t *testing.T) {
 					t.Errorf("serviceName has wrong value, have=%s, want=%s", pkgName, "Haberdasher")
 				}
 
-				methodName, exists := twirp.MethodName(ctx)
+				methodName, exists := twirk.MethodName(ctx)
 				if !exists {
 					t.Error("methodName not found in context")
 					return
@@ -215,8 +215,8 @@ func TestClientRedirectError(t *testing.T) {
 			if err == nil {
 				t.Fatal("MakeHat err=nil, expected an error because redirects aren't allowed")
 			}
-			if twerr, ok := err.(twirp.Error); !ok {
-				t.Fatalf("expected twirp.Error typed err, have=%T", err)
+			if twerr, ok := err.(twirk.Error); !ok {
+				t.Fatalf("expected twirk.Error typed err, have=%T", err)
 			} else {
 				// error message should mention the code
 				if !strings.Contains(twerr.Error(), strconv.Itoa(code)) {
@@ -258,9 +258,9 @@ func TestClientRedirectError(t *testing.T) {
 }
 
 func TestClientIntermediaryErrors(t *testing.T) {
-	testcase := func(code int, expectedErrorCode twirp.ErrorCode, clientMaker func(string, HTTPClient) Haberdasher) func(*testing.T) {
+	testcase := func(code int, expectedErrorCode twirk.ErrorCode, clientMaker func(string, HTTPClient) Haberdasher) func(*testing.T) {
 		return func(t *testing.T) {
-			// Make a server that returns invalid twirp error responses,
+			// Make a server that returns invalid twirk error responses,
 			// simulating a network intermediary.
 			s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(code)
@@ -276,8 +276,8 @@ func TestClientIntermediaryErrors(t *testing.T) {
 			if err == nil {
 				t.Fatal("Expected error, but found nil")
 			}
-			if twerr, ok := err.(twirp.Error); !ok {
-				t.Fatalf("expected twirp.Error typed err, have=%T", err)
+			if twerr, ok := err.(twirk.Error); !ok {
+				t.Fatalf("expected twirk.Error typed err, have=%T", err)
 			} else {
 				// error message should mention the code
 				if !strings.Contains(twerr.Msg(), fmt.Sprintf("Error from intermediary with HTTP status code %d", code)) {
@@ -297,7 +297,7 @@ func TestClientIntermediaryErrors(t *testing.T) {
 				}
 				// error code should be properly mapped from HTTP Code
 				if twerr.Code() != expectedErrorCode {
-					t.Errorf("expected to map HTTP status %q to twirp.ErrorCode %q, but found %q", code, expectedErrorCode, twerr.Code())
+					t.Errorf("expected to map HTTP status %q to twirk.ErrorCode %q, but found %q", code, expectedErrorCode, twerr.Code())
 				}
 			}
 		}
@@ -305,29 +305,29 @@ func TestClientIntermediaryErrors(t *testing.T) {
 
 	var cases = []struct {
 		httpStatusCode int
-		twirpErrorCode twirp.ErrorCode
+		twirkErrorCode twirk.ErrorCode
 	}{
-		// Map meaningful HTTP codes to semantic equivalent twirp.ErrorCodes
-		{400, twirp.Internal},
-		{401, twirp.Unauthenticated},
-		{403, twirp.PermissionDenied},
-		{404, twirp.BadRoute},
-		{429, twirp.Unavailable},
-		{502, twirp.Unavailable},
-		{503, twirp.Unavailable},
-		{504, twirp.Unavailable},
+		// Map meaningful HTTP codes to semantic equivalent twirk.ErrorCodes
+		{400, twirk.Internal},
+		{401, twirk.Unauthenticated},
+		{403, twirk.PermissionDenied},
+		{404, twirk.BadRoute},
+		{429, twirk.Unavailable},
+		{502, twirk.Unavailable},
+		{503, twirk.Unavailable},
+		{504, twirk.Unavailable},
 
 		// all other codes are unknown
-		{505, twirp.Unknown},
-		{410, twirp.Unknown},
-		{408, twirp.Unknown},
+		{505, twirk.Unknown},
+		{410, twirk.Unknown},
+		{408, twirk.Unknown},
 	}
 	for _, c := range cases {
-		jsonTestName := fmt.Sprintf("json_client/%d_to_%s", c.httpStatusCode, c.twirpErrorCode)
-		t.Run(jsonTestName, testcase(c.httpStatusCode, c.twirpErrorCode, NewHaberdasherJSONClient))
+		jsonTestName := fmt.Sprintf("json_client/%d_to_%s", c.httpStatusCode, c.twirkErrorCode)
+		t.Run(jsonTestName, testcase(c.httpStatusCode, c.twirkErrorCode, NewHaberdasherJSONClient))
 
-		protoTestName := fmt.Sprintf("proto_client/%d_to_%s", c.httpStatusCode, c.twirpErrorCode)
-		t.Run(protoTestName, testcase(c.httpStatusCode, c.twirpErrorCode, NewHaberdasherProtobufClient))
+		protoTestName := fmt.Sprintf("proto_client/%d_to_%s", c.httpStatusCode, c.twirkErrorCode)
+		t.Run(protoTestName, testcase(c.httpStatusCode, c.twirkErrorCode, NewHaberdasherProtobufClient))
 	}
 }
 

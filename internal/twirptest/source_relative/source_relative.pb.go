@@ -52,7 +52,7 @@ func (m *Msg) XXX_DiscardUnknown() {
 var xxx_messageInfo_Msg proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*Msg)(nil), "twirp.internal.twirptest.source_relative.Msg")
+	proto.RegisterType((*Msg)(nil), "twirk.internal.twirktest.source_relative.Msg")
 }
 
 func init() { proto.RegisterFile("source_relative.proto", fileDescriptor_f8a2a00319471c84) }

@@ -17,9 +17,9 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='proto.proto',
-  package='twirp.internal.twirptest.proto',
+  package='twirk.internal.twirktest.proto',
   syntax='proto3',
-  serialized_pb=_b('\n\x0bproto.proto\x12\x1etwirp.internal.twirptest.proto\"\x05\n\x03Msg2W\n\x03Svc\x12P\n\x04Send\x12#.twirp.internal.twirptest.proto.Msg\x1a#.twirp.internal.twirptest.proto.MsgB\x07Z\x05protob\x06proto3')
+  serialized_pb=_b('\n\x0bproto.proto\x12\x1etwirk.internal.twirktest.proto\"\x05\n\x03Msg2W\n\x03Svc\x12P\n\x04Send\x12#.twirk.internal.twirktest.proto.Msg\x1a#.twirk.internal.twirktest.proto.MsgB\x07Z\x05protob\x06proto3')
 )
 
 
@@ -27,7 +27,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _MSG = _descriptor.Descriptor(
   name='Msg',
-  full_name='twirp.internal.twirptest.proto.Msg',
+  full_name='twirk.internal.twirktest.proto.Msg',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -54,7 +54,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Msg = _reflection.GeneratedProtocolMessageType('Msg', (_message.Message,), dict(
   DESCRIPTOR = _MSG,
   __module__ = 'proto_pb2'
-  # @@protoc_insertion_point(class_scope:twirp.internal.twirptest.proto.Msg)
+  # @@protoc_insertion_point(class_scope:twirk.internal.twirktest.proto.Msg)
   ))
 _sym_db.RegisterMessage(Msg)
 
@@ -64,7 +64,7 @@ DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b
 
 _SVC = _descriptor.ServiceDescriptor(
   name='Svc',
-  full_name='twirp.internal.twirptest.proto.Svc',
+  full_name='twirk.internal.twirktest.proto.Svc',
   file=DESCRIPTOR,
   index=0,
   options=None,
@@ -73,7 +73,7 @@ _SVC = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='Send',
-    full_name='twirp.internal.twirptest.proto.Svc.Send',
+    full_name='twirk.internal.twirktest.proto.Svc.Send',
     index=0,
     containing_service=None,
     input_type=_MSG,

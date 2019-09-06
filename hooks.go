@@ -11,12 +11,12 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-package twirp
+package twirk
 
 import "context"
 
 // ServerHooks is a container for callbacks that can instrument a
-// Twirp-generated server. These callbacks all accept a context and return a
+// twirk-generated server. These callbacks all accept a context and return a
 // context. They can use this to add to the request context as it threads
 // through the system, appending values or deadlines to it.
 //
@@ -27,19 +27,23 @@ import "context"
 // deserializing a request.
 //
 // The RequestReceived hook is always called first, and it is called for every
-// request that the Twirp server handles. The last hook to be called in a
+// request that the twirk server handles. The last hook to be called in a
 // request's lifecycle is always ResponseSent, even in the case of an error.
 //
 // Details on the timing of each hook are documented as comments on the fields
 // of the ServerHooks type.
 type ServerHooks struct {
-	// RequestReceived is called as soon as a request enters the Twirp
+	// RequestReceived is called as soon as a request enters the twirk
 	// server at the earliest available moment.
 	RequestReceived func(context.Context) (context.Context, error)
 
 	// RequestRouted is called when a request has been routed to a
-	// particular method of the Twirp server.
+	// particular method of the twirk server.
 	RequestRouted func(context.Context) (context.Context, error)
+
+	// RequestDecoded is called when a request has been decoded into the
+	// corrisponding struct. Useful for validation or others request specific actions
+	RequestDecoded func(context.Context, interface{}) (context.Context, error)
 
 	// ResponsePrepared is called when a request has been handled and a
 	// response is ready to be sent to the client.
@@ -86,6 +90,18 @@ func ChainHooks(hooks ...*ServerHooks) *ServerHooks {
 			for _, h := range hooks {
 				if h != nil && h.RequestRouted != nil {
 					ctx, err = h.RequestRouted(ctx)
+					if err != nil {
+						return ctx, err
+					}
+				}
+			}
+			return ctx, nil
+		},
+		RequestDecoded: func(ctx context.Context, req interface{}) (context.Context, error) {
+			var err error
+			for _, h := range hooks {
+				if h != nil && h.RequestDecoded != nil {
+					ctx, err = h.RequestDecoded(ctx, req)
 					if err != nil {
 						return ctx, err
 					}

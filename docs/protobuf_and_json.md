@@ -1,20 +1,20 @@
 ---
 id: "proto_and_json"
-title: "Twirp's Serialization Schemes"
+title: "twirk's Serialization Schemes"
 sidebar_label: "Protobuf and JSON"
 ---
 
-Twirp can handle both Protobuf and JSON encoding for requests and responses.
+twirk can handle both Protobuf and JSON encoding for requests and responses.
 
-This is transparent to your service implementation. Twirp parses the HTTP
+This is transparent to your service implementation. twirk parses the HTTP
 request (returning an Internal error if the `Content-Type` or the body are
 invalid) and converts it into the request struct defined in the interface. Your
-implementation returns a response struct, which Twirp serializes back to a
+implementation returns a response struct, which twirk serializes back to a
 Protobuf or JSON response (depending on the request `Content-Type`).
 
 See [the spec](spec.md) for more details on routing and serialization.
 
-Twirp can generates two types of clients for your service:
+twirk can generates two types of clients for your service:
 
  * `New{{Service}}ProtobufClient`: makes Protobuf requests to your service.
  * `New{{Service}}JSONClient`: makes JSON requests to your service.
@@ -31,12 +31,12 @@ updates. Did you notice the numbers added after each field? They allow you to
 change a field and it still works if the client and the server have a different
 versions (that doesn't work with JSON clients).
 
-### If Protobuf is better, why does Twirp support JSON?
+### If Protobuf is better, why does twirk support JSON?
 
-You will probably never need to use a Twirp **JSONClient** in Go, but having
+You will probably never need to use a twirk **JSONClient** in Go, but having
 your servers automatically handle JSON requests is still very convenient. It
 makes it easier to debug (see [cURL requests](curl.md)), allows to easily write
-clients in other languages like Python, or make REST mappings to Twirp
+clients in other languages like Python, or make REST mappings to twirk
 services.
 
 The JSON client is generated to provide a reference for implementations in other

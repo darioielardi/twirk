@@ -1,6 +1,6 @@
 # clientcompat #
 
-clientcompat is a tool to test the compatibility of Twirp client
+clientcompat is a tool to test the compatibility of twirk client
 implementations.
 
 ## Usage ##

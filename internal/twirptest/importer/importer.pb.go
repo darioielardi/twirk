@@ -7,8 +7,8 @@ package importer
 
 import (
 	fmt "fmt"
+	_ "github.com/darioielardi/twirk/internal/twirktest/importable"
 	proto "github.com/golang/protobuf/proto"
-	_ "github.com/twitchtv/twirp/internal/twirptest/importable"
 	math "math"
 )
 

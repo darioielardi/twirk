@@ -1,13 +1,13 @@
 ---
 id: install
-title: Installing Twirp
+title: Installing twirk
 sidebar_label: Installation
 ---
 
-You'll need a few things to install Twirp:
+You'll need a few things to install twirk:
  * Go1.7+
  * The protobuf compiler `protoc`
- * Go and Twirp protoc plugins `protoc-gen-go` and `protoc-gen-twirp`
+ * Go and twirk protoc plugins `protoc-gen-go` and `protoc-gen-twirk`
 
 ## Install protoc
 
@@ -22,7 +22,7 @@ It is also available in MacOS through Homebrew:
 $ brew install protobuf
 ```
 
-## Get protoc-gen-go and protoc-gen-twirp plugins
+## Get protoc-gen-go and protoc-gen-twirk plugins
 
 ### With retool
 
@@ -36,7 +36,7 @@ $ go get github.com/twitchtv/retool
 Install the plugins into your project's `_tools` folder:
 ```sh
 $ retool add github.com/golang/protobuf/protoc-gen-go master
-$ retool add github.com/twitchtv/twirp/protoc-gen-twirp master
+$ retool add github.com/darioielardi/twirk/protoc-gen-twirk master
 ```
 
 This will make it easier to manage and update versions without causing problems
@@ -46,7 +46,7 @@ If the plugins were installed with retool, when run the `protoc` command make
 sure to prefix with `retool do`, for example:
 
 ```sh
-$ retool do protoc --proto_path=$GOPATH/src:. --twirp_out=. --go_out=. ./rpc/haberdasher/service.proto
+$ retool do protoc --proto_path=$GOPATH/src:. --twirk_out=. --go_out=. ./rpc/haberdasher/service.proto
 ```
 
 ### With go get
@@ -55,7 +55,7 @@ Download and install `protoc-gen-go` using the normal Go tools:
 
 ```sh
 $ go get -u github.com/golang/protobuf/protoc-gen-go
-$ go get -u github.com/twitchtv/twirp/protoc-gen-twirp
+$ go get -u github.com/darioielardi/twirk/protoc-gen-twirk
 ```
 
 The normal Go tools will install `protoc-gen-go` in `$GOBIN`, defaulting to
@@ -66,27 +66,27 @@ to find it, so you might need to explicitly add it to your path:
 $ export PATH=$PATH:$GOPATH/bin
 ```
 
-## Updating Twirp ##
+## Updating twirk ##
 
-Twirp releases are tagged with semantic versioning and releases are managed by
-Github. See the [releases](https://github.com/twitchtv/twirp/releases) page.
+twirk releases are tagged with semantic versioning and releases are managed by
+Github. See the [releases](https://github.com/darioielardi/twirk/releases) page.
 
-To stay up to date, you update `protoc-gen-twirp` and regenerate your code. If
+To stay up to date, you update `protoc-gen-twirk` and regenerate your code. If
 you are using [retool](https://github.com/twitchtv/retool), that's done with
 
 ```sh
-$ retool upgrade github.com/twitchtv/twirp/protoc-gen-twirp v5.2.0
+$ retool upgrade github.com/darioielardi/twirk/protoc-gen-twirk v5.2.0
 ```
 
 If you're not using retool, you can also do a system-wide install with checking
 out the package new version and using `go install`:
 
 ```sh
-$ cd $GOPATH/src/github.com/twitchtv/twirp
+$ cd $GOPATH/src/github.com/darioielardi/twirk
 $ git checkout v5.2.0
-$ go install ./protoc-gen-twirp
+$ go install ./protoc-gen-twirk
 ```
 
-With the new version of `protoc-gen-twirp`, you can re-generate code to update
+With the new version of `protoc-gen-twirk`, you can re-generate code to update
 your servers. Then, any of the clients of your service can update their vendored
 copy of your service to get the latest version.

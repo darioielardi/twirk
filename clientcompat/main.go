@@ -23,8 +23,8 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/twitchtv/twirp"
-	"github.com/twitchtv/twirp/clientcompat/internal/clientcompat"
+	"github.com/darioielardi/twirk"
+	"github.com/darioielardi/twirk/clientcompat/internal/clientcompat"
 )
 
 var (
@@ -89,7 +89,7 @@ func testNoop(cc *clientCompat, s *httptest.Server, clientBin string) {
 
 		switch {
 		case wantErrCode == "" && haveErrCode != "":
-			fail("client reported twirp error %q when server did not error", haveErrCode)
+			fail("client reported twirk error %q when server did not error", haveErrCode)
 		case wantErrCode != "" && haveErrCode == "":
 			fail("client did not report err code when server errored, expected %q", wantErrCode)
 		case wantErrCode != haveErrCode:
@@ -107,17 +107,17 @@ func testNoop(cc *clientCompat, s *httptest.Server, clientBin string) {
 		"",
 	)
 
-	for _, code := range []twirp.ErrorCode{
-		twirp.Canceled, twirp.Unknown, twirp.InvalidArgument, twirp.DeadlineExceeded,
-		twirp.NotFound, twirp.BadRoute, twirp.AlreadyExists, twirp.PermissionDenied,
-		twirp.Unauthenticated, twirp.ResourceExhausted, twirp.FailedPrecondition,
-		twirp.Aborted, twirp.OutOfRange, twirp.Unimplemented, twirp.Internal,
-		twirp.Unavailable, twirp.DataLoss,
+	for _, code := range []twirk.ErrorCode{
+		twirk.Canceled, twirk.Unknown, twirk.InvalidArgument, twirk.DeadlineExceeded,
+		twirk.NotFound, twirk.BadRoute, twirk.AlreadyExists, twirk.PermissionDenied,
+		twirk.Unauthenticated, twirk.ResourceExhausted, twirk.FailedPrecondition,
+		twirk.Aborted, twirk.OutOfRange, twirk.Unimplemented, twirk.Internal,
+		twirk.Unavailable, twirk.DataLoss,
 	} {
 		testcase(
 			fmt.Sprintf("%q error parsing", code),
 			func(context.Context, *clientcompat.Empty) (*clientcompat.Empty, error) {
-				return nil, twirp.NewError(code, "failed")
+				return nil, twirk.NewError(code, "failed")
 			},
 			string(code),
 		)
@@ -151,7 +151,7 @@ func testMethod(cc *clientCompat, s *httptest.Server, clientBin string) {
 
 		switch {
 		case wantErrCode == "" && haveErrCode != "":
-			fail("client reported twirp error %q when server did not error", haveErrCode)
+			fail("client reported twirk error %q when server did not error", haveErrCode)
 			return
 		case wantErrCode != "" && haveErrCode == "":
 			fail("client did not report err code when server errored, expected %q", wantErrCode)
@@ -186,7 +186,7 @@ func testMethod(cc *clientCompat, s *httptest.Server, clientBin string) {
 		},
 		func(_ context.Context, req *clientcompat.Req) (*clientcompat.Resp, error) {
 			if req.V != "value" {
-				return nil, twirp.InvalidArgumentError("V", "should be 'value'")
+				return nil, twirk.InvalidArgumentError("V", "should be 'value'")
 			}
 			return &clientcompat.Resp{V: 1}, nil
 		},

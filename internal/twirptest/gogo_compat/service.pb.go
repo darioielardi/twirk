@@ -5,7 +5,7 @@
 /*
 Package gogo_compat is a generated protocol buffer package.
 
-Test to make sure that Twirp plays well with code generated with
+Test to make sure that twirk plays well with code generated with
 github.com/gogo/protobuf/protoc-gen-gofast.
 
 It is generated from these files:
@@ -42,7 +42,7 @@ func (*Msg) ProtoMessage()               {}
 func (*Msg) Descriptor() ([]byte, []int) { return fileDescriptorService, []int{0} }
 
 func init() {
-	proto.RegisterType((*Msg)(nil), "twirp.internal.twirptest.gogo_compat.Msg")
+	proto.RegisterType((*Msg)(nil), "twirk.internal.twirktest.gogo_compat.Msg")
 }
 func (m *Msg) Marshal() (dAtA []byte, err error) {
 	size := m.Size()

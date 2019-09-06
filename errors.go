@@ -11,24 +11,24 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-// Package twirp provides core types used in generated Twirp servers and client.
+// Package twirk provides core types used in generated twirk servers and client.
 //
-// Twirp services handle errors using the `twirp.Error` interface.
+// twirk services handle errors using the `twirk.Error` interface.
 //
 // For example, a server method may return an InvalidArgumentError:
 //
 //     if req.Order != "DESC" && req.Order != "ASC" {
-//         return nil, twirp.InvalidArgumentError("Order", "must be DESC or ASC")
+//         return nil, twirk.InvalidArgumentError("Order", "must be DESC or ASC")
 //     }
 //
-// And the same twirp.Error is returned by the client, for example:
+// And the same twirk.Error is returned by the client, for example:
 //
-//     resp, err := twirpClient.RPCMethod(ctx, req)
+//     resp, err := twirkClient.RPCMethod(ctx, req)
 //     if err != nil {
-//         if twerr, ok := err.(twirp.Error); ok {
+//         if twerr, ok := err.(twirk.Error); ok {
 //             switch twerr.Code() {
-//             case twirp.InvalidArgument:
-//                 log.Error("invalid argument "+twirp.Meta("argument"))
+//             case twirk.InvalidArgument:
+//                 log.Error("invalid argument "+twirk.Meta("argument"))
 //             default:
 //                 log.Error(twerr.Error())
 //             }
@@ -39,11 +39,11 @@
 // the server, the network, or the client itself (i.e. failure parsing
 // response).
 //
-package twirp
+package twirk
 
 import "fmt"
 
-// Error represents an error in a Twirp service call.
+// Error represents an error in a twirk service call.
 type Error interface {
 	// Code is of the valid error codes.
 	Code() ErrorCode
@@ -63,11 +63,11 @@ type Error interface {
 	// MetaMap returns the complete key-value metadata map stored on the error.
 	MetaMap() map[string]string
 
-	// Error returns a string of the form "twirp error <Type>: <Msg>"
+	// Error returns a string of the form "twirk error <Type>: <Msg>"
 	Error() string
 }
 
-// NewError is the generic constructor for a twirp.Error. The ErrorCode must be
+// NewError is the generic constructor for a twirk.Error. The ErrorCode must be
 // one of the valid predefined constants, otherwise it will be converted to an
 // error {type: Internal, msg: "invalid error type {{code}}"}. If you need to
 // add metadata, use .WithMeta(key, value) method after building the error.
@@ -132,10 +132,10 @@ func InternalErrorWith(err error) Error {
 	}
 }
 
-// ErrorCode represents a Twirp error type.
+// ErrorCode represents a twirk error type.
 type ErrorCode string
 
-// Valid Twirp error types. Most error types are equivalent to gRPC status codes
+// Valid twirk error types. Most error types are equivalent to gRPC status codes
 // and follow the same semantics.
 const (
 	// Canceled indicates the operation was cancelled (typically by the caller).
@@ -164,7 +164,7 @@ const (
 	// NotFound means some requested entity was not found.
 	NotFound ErrorCode = "not_found"
 
-	// BadRoute means that the requested URL path wasn't routable to a Twirp
+	// BadRoute means that the requested URL path wasn't routable to a twirk
 	// service and method. This is returned by the generated server, and usually
 	// shouldn't be returned by applications. Instead, applications should use
 	// NotFound or Unimplemented.
@@ -233,8 +233,8 @@ const (
 	NoError ErrorCode = ""
 )
 
-// ServerHTTPStatusFromErrorCode maps a Twirp error type into a similar HTTP
-// response status. It is used by the Twirp server handler to set the HTTP
+// ServerHTTPStatusFromErrorCode maps a twirk error type into a similar HTTP
+// response status. It is used by the twirk server handler to set the HTTP
 // response status code. Returns 0 if the ErrorCode is invalid.
 func ServerHTTPStatusFromErrorCode(code ErrorCode) int {
 	switch code {
@@ -286,7 +286,7 @@ func IsValidErrorCode(code ErrorCode) bool {
 	return ServerHTTPStatusFromErrorCode(code) != 0
 }
 
-// twirp.Error implementation
+// twirk.Error implementation
 type twerr struct {
 	code ErrorCode
 	msg  string
@@ -321,11 +321,11 @@ func (e *twerr) MetaMap() map[string]string {
 }
 
 func (e *twerr) Error() string {
-	return fmt.Sprintf("twirp error %s: %s", e.code, e.msg)
+	return fmt.Sprintf("twirk error %s: %s", e.code, e.msg)
 }
 
-// wrappedErr fulfills the twirp.Error interface and the
-// github.com/pkg/errors.Causer interface. It exposes all the twirp error
+// wrappedErr fulfills the twirk.Error interface and the
+// github.com/pkg/errors.Causer interface. It exposes all the twirk error
 // methods, but root cause of an error can be retrieved with
 // (*wrappedErr).Cause. This is expected to be used with the InternalErrorWith
 // function.

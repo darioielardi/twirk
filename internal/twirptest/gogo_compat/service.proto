@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-// Test to make sure that Twirp plays well with code generated with
+// Test to make sure that twirk plays well with code generated with
 // github.com/gogo/protobuf/protoc-gen-gofast.
-package twirp.internal.twirptest.gogo_compat;
+package twirk.internal.twirktest.gogo_compat;
 option go_package = "gogo_compat";
 
 message Msg {}

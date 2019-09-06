@@ -11,7 +11,7 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-package twirptest
+package twirktest
 
 import (
 	"context"
@@ -19,7 +19,7 @@ import (
 	"net/http/httptest"
 	"time"
 
-	"github.com/twitchtv/twirp"
+	"github.com/darioielardi/twirk"
 )
 
 type hatmaker func(ctx context.Context, s *Size) (*Hat, error)
@@ -42,7 +42,7 @@ func NoopHatmaker() Haberdasher {
 func PickyHatmaker(want int32) Haberdasher {
 	return hatmaker(func(ctx context.Context, s *Size) (*Hat, error) {
 		if s.Inches != want {
-			return nil, twirp.InvalidArgumentError("Inches", "I can't make a hat that size!")
+			return nil, twirk.InvalidArgumentError("Inches", "I can't make a hat that size!")
 		}
 		return &Hat{Size: s.Inches, Color: "blue", Name: "top hat"}, nil
 	})
@@ -77,12 +77,12 @@ func NilHatmaker() Haberdasher {
 	})
 }
 
-func ServerAndClient(h Haberdasher, hooks *twirp.ServerHooks) (*httptest.Server, Haberdasher) {
+func ServerAndClient(h Haberdasher, hooks *twirk.ServerHooks) (*httptest.Server, Haberdasher) {
 	s := httptest.NewServer(NewHaberdasherServer(h, hooks))
 	c := NewHaberdasherProtobufClient(s.URL, http.DefaultClient)
 	return s, c
 }
 
-func TwirpServerAndClient(hooks *twirp.ServerHooks) (*httptest.Server, Haberdasher) {
+func twirkServerAndClient(hooks *twirk.ServerHooks) (*httptest.Server, Haberdasher) {
 	return ServerAndClient(NoopHatmaker(), hooks)
 }

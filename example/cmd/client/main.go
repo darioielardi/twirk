@@ -19,8 +19,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/twitchtv/twirp"
-	"github.com/twitchtv/twirp/example"
+	"github.com/darioielardi/twirk"
+	"github.com/darioielardi/twirk/example"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	for i := 0; i < 5; i++ {
 		hat, err = client.MakeHat(context.Background(), &example.Size{Inches: 12})
 		if err != nil {
-			if twerr, ok := err.(twirp.Error); ok {
+			if twerr, ok := err.(twirk.Error); ok {
 				if twerr.Meta("retryable") != "" {
 					// Log the error and go again.
 					log.Printf("got error %q, retrying", twerr)

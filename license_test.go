@@ -11,7 +11,7 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-package twirp
+package twirk
 
 import (
 	"bytes"
@@ -56,7 +56,7 @@ func TestSourceCodeLicenseHeaders(t *testing.T) {
 			return nil
 		}
 
-		if strings.HasSuffix(path, ".twirp.go") || strings.HasSuffix(path, ".pb.go") {
+		if strings.HasSuffix(path, ".twirk.go") || strings.HasSuffix(path, ".pb.go") {
 			return nil
 		}
 

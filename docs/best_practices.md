@@ -4,15 +4,15 @@ title: "Best Practices"
 sidebar_label: "Best Practices"
 ---
 
-Twirp simplifies service design when compared with a REST endpoint: method
+twirk simplifies service design when compared with a REST endpoint: method
 definitions, message types and parsing is handled by the framework (i.e. you
 don’t have to worry about JSON fields or types). However, there are still some
-things to consider when making a new service in Twirp, mainly to keep
+things to consider when making a new service in twirk, mainly to keep
 consistency.
 
 ## Folder/Package Structure
 
-The recommended folder/package structure for your twirp `<service>` is:
+The recommended folder/package structure for your twirk `<service>` is:
 ```
 /cmd
     /<service>
@@ -36,7 +36,7 @@ For example, for the Haberdasher service it would be:
     /haberdasher
         service.proto
         service.pb.go
-        service.twirp.go
+        service.twirk.go
 /internal
     /haberdasherserver
         server_test.go
@@ -84,10 +84,10 @@ package <organization>.<repo>.<service>;
 option go_package = "<service>";
 ```
 
-## Specifying protoc version and using retool for protoc-gen-go and protoc-gen-twirp
+## Specifying protoc version and using retool for protoc-gen-go and protoc-gen-twirk
 
 Code generation depends on `protoc` and its plugins `protoc-gen-go` and
-`protoc-gen-twirp`. Having different versions may cause problems.
+`protoc-gen-twirk`. Having different versions may cause problems.
 
 Make sure to specify the required `protoc` version in your README or
 CONTRIBUTING file.
@@ -98,7 +98,7 @@ lock versions for all team members.
 
 ```sh
 $ retool add github.com/golang/protobuf/protoc-gen-go master
-$ retool add github.com/twitchtv/twirp/protoc-gen-twirp master
+$ retool add github.com/darioielardi/twirk/protoc-gen-twirk master
 ```
 
 Using a Makefile is a good way to simplify code generation:
@@ -106,7 +106,7 @@ Using a Makefile is a good way to simplify code generation:
 ```Makefile
 gen:
 	# Auto-generate code
-	retool do protoc --proto_path=. --twirp_out=. --go_out=. rpc/<service>/service.proto
+	retool do protoc --proto_path=. --twirk_out=. --go_out=. rpc/<service>/service.proto
 
 upgrade:
 	# Upgrade glide dependencies
@@ -151,7 +151,7 @@ handled by the service implementation. But to make this clear in the `.proto`
 file:
  * Add a "required" comment on the field. For example `string name = 1; //
    required` implies that the server implementation will return an
-   `twirp.RequiredArgumentError("name")` if the name is empty.
+   `twirk.RequiredArgumentError("name")` if the name is empty.
 
 If you need a different default (e.g. limit default 20 for paginated
 collections), it needs to be handled by the service implementation. But to make
@@ -166,20 +166,20 @@ fields (this is by design). If you really need to tell them apart, you need to
 use an extra bool field, or use `google/protobuf.wrappers.proto` messages (which
 can be nil in go).
 
-## Twirp Errors
+## twirk Errors
 
 Protocol Buffers do not specify errors. You can always add an extra field on the
-returned message for the error, but Twirp has an excellent system that you
+returned message for the error, but twirk has an excellent system that you
 should use instead:
 
- * Familiarize yourself with the possible [Twirp error codes](errors.md) and use
+ * Familiarize yourself with the possible [twirk error codes](errors.md) and use
    the ones that make sense for each situation (i.e. `InvalidArgument`,
    `NotFound`, `Internal`). The codes are very straightforward and are almost
    the same as in gRPC.
- * Always return a `twirp.Error`. Twirp allows you to return a regular `error`,
-   that will get wrapped with `twirp.InternalErrorWith(err)`, but it is better
+ * Always return a `twirk.Error`. twirk allows you to return a regular `error`,
+   that will get wrapped with `twirk.InternalErrorWith(err)`, but it is better
    if you explicitly wrap it yourself. Being explicit makes the server and the
-   client to always return the same twirp errors, which is more predictable and
+   client to always return the same twirk errors, which is more predictable and
    easier for unit tests.
  * Include possible errors on the `.proto` file (add comments to RPC methods).
  * But there's no need to document all the obvious `Internal` errors, which can
@@ -188,11 +188,11 @@ should use instead:
  * Make sure to document (with comments) possible validation errors on the
    specific message fields. For example `int32 amount = 1; // must be positive`
    implies that the server implementation will return a
-   `twirp.InvalidArgument("amount", "must be positive")` error if the condition
+   `twirk.InvalidArgument("amount", "must be positive")` error if the condition
    is not met.
  * Required fields are also validation errors. For example, if a given string
    field cannot be empty, you should add a "required" comment in the proto file,
-   which implies that a `twirp.RequiredArgumentError(field)` will be returned if
+   which implies that a `twirk.RequiredArgumentError(field)` will be returned if
    the field is empty (or missing, which is the same thing in proto3). If you
    are using proto2 (I hope not), the "required" comment is still preferred over
    the required field type.

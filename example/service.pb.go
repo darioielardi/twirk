@@ -122,8 +122,8 @@ func (m *Size) GetInches() int32 {
 }
 
 func init() {
-	proto.RegisterType((*Hat)(nil), "twitch.twirp.example.Hat")
-	proto.RegisterType((*Size)(nil), "twitch.twirp.example.Size")
+	proto.RegisterType((*Hat)(nil), "twitch.twirk.example.Hat")
+	proto.RegisterType((*Size)(nil), "twitch.twirk.example.Size")
 }
 
 func init() { proto.RegisterFile("service.proto", fileDescriptor_a0b84a42fa06f626) }

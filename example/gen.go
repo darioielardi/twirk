@@ -13,4 +13,4 @@
 
 package example
 
-//go:generate protoc -I . service.proto --twirp_out=. --go_out=. --python_out=. --twirp_python_out=.
+//go:generate protoc -I . service.proto --twirk_out=. --go_out=. --python_out=. --twirk_python_out=.

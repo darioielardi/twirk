@@ -10,4 +10,4 @@ set -euo pipefail
 # Append '/src' to every element in GOPATH.
 PROTOPATH=${GOPATH/://src:}/src
 
-protoc --proto_path="${PROTOPATH}:." --twirp_out=. --gofast_out=. "$@"
+protoc --proto_path="${PROTOPATH}:." --twirk_out=. --gofast_out=. "$@"

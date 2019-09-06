@@ -18,15 +18,15 @@ from __future__ import print_function
 import sys
 
 import clientcompat_pb2
-import clientcompat_pb2_twirp
+import clientcompat_pb2_twirk
 
 def main():
     req = read_request()
-    client = clientcompat_pb2_twirp.CompatServiceClient(req.service_address)
+    client = clientcompat_pb2_twirk.CompatServiceClient(req.service_address)
     try:
         resp = do_request(client, req)
         sys.stdout.write(resp.SerializeToString())
-    except clientcompat_pb2_twirp.TwirpException as e:
+    except clientcompat_pb2_twirk.twirkException as e:
         sys.stderr.write(e.code)
 
 

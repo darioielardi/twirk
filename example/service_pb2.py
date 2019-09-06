@@ -17,9 +17,9 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='service.proto',
-  package='twitch.twirp.example',
+  package='twitch.twirk.example',
   syntax='proto3',
-  serialized_pb=_b('\n\rservice.proto\x12\x14twitch.twirp.example\"0\n\x03Hat\x12\x0c\n\x04size\x18\x01 \x01(\x05\x12\r\n\x05\x63olor\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x16\n\x04Size\x12\x0e\n\x06inches\x18\x01 \x01(\x05\x32O\n\x0bHaberdasher\x12@\n\x07MakeHat\x12\x1a.twitch.twirp.example.Size\x1a\x19.twitch.twirp.example.HatB\tZ\x07\x65xampleb\x06proto3')
+  serialized_pb=_b('\n\rservice.proto\x12\x14twitch.twirk.example\"0\n\x03Hat\x12\x0c\n\x04size\x18\x01 \x01(\x05\x12\r\n\x05\x63olor\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x16\n\x04Size\x12\x0e\n\x06inches\x18\x01 \x01(\x05\x32O\n\x0bHaberdasher\x12@\n\x07MakeHat\x12\x1a.twitch.twirk.example.Size\x1a\x19.twitch.twirk.example.HatB\tZ\x07\x65xampleb\x06proto3')
 )
 
 
@@ -27,27 +27,27 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _HAT = _descriptor.Descriptor(
   name='Hat',
-  full_name='twitch.twirp.example.Hat',
+  full_name='twitch.twirk.example.Hat',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='size', full_name='twitch.twirp.example.Hat.size', index=0,
+      name='size', full_name='twitch.twirk.example.Hat.size', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='color', full_name='twitch.twirp.example.Hat.color', index=1,
+      name='color', full_name='twitch.twirk.example.Hat.color', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='name', full_name='twitch.twirp.example.Hat.name', index=2,
+      name='name', full_name='twitch.twirk.example.Hat.name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -72,13 +72,13 @@ _HAT = _descriptor.Descriptor(
 
 _SIZE = _descriptor.Descriptor(
   name='Size',
-  full_name='twitch.twirp.example.Size',
+  full_name='twitch.twirk.example.Size',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='inches', full_name='twitch.twirp.example.Size.inches', index=0,
+      name='inches', full_name='twitch.twirk.example.Size.inches', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -107,14 +107,14 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Hat = _reflection.GeneratedProtocolMessageType('Hat', (_message.Message,), dict(
   DESCRIPTOR = _HAT,
   __module__ = 'service_pb2'
-  # @@protoc_insertion_point(class_scope:twitch.twirp.example.Hat)
+  # @@protoc_insertion_point(class_scope:twitch.twirk.example.Hat)
   ))
 _sym_db.RegisterMessage(Hat)
 
 Size = _reflection.GeneratedProtocolMessageType('Size', (_message.Message,), dict(
   DESCRIPTOR = _SIZE,
   __module__ = 'service_pb2'
-  # @@protoc_insertion_point(class_scope:twitch.twirp.example.Size)
+  # @@protoc_insertion_point(class_scope:twitch.twirk.example.Size)
   ))
 _sym_db.RegisterMessage(Size)
 
@@ -124,7 +124,7 @@ DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b
 
 _HABERDASHER = _descriptor.ServiceDescriptor(
   name='Haberdasher',
-  full_name='twitch.twirp.example.Haberdasher',
+  full_name='twitch.twirk.example.Haberdasher',
   file=DESCRIPTOR,
   index=0,
   options=None,
@@ -133,7 +133,7 @@ _HABERDASHER = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='MakeHat',
-    full_name='twitch.twirp.example.Haberdasher.MakeHat',
+    full_name='twitch.twirk.example.Haberdasher.MakeHat',
     index=0,
     containing_service=None,
     input_type=_SIZE,

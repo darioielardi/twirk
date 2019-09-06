@@ -24,7 +24,7 @@ import (
 
 func TestGenerateParseCommandLineParamsError(t *testing.T) {
 	if os.Getenv("BE_CRASHER") == "1" {
-		g := &twirp{}
+		g := &twirk{}
 		g.Generate(&plugin.CodeGeneratorRequest{
 			Parameter: proto.String("invalid"),
 		})

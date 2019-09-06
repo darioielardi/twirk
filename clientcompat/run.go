@@ -18,9 +18,9 @@ import (
 	"log"
 	"os/exec"
 
+	"github.com/darioielardi/twirk/clientcompat/internal/clientcompat"
 	"github.com/gogo/protobuf/proto"
 	"github.com/pkg/errors"
-	"github.com/twitchtv/twirp/clientcompat/internal/clientcompat"
 )
 
 func runClient(clientBin string, msg *clientcompat.ClientCompatMessage) (resp []byte, errCode string, err error) {
@@ -54,7 +54,7 @@ func runClient(clientBin string, msg *clientcompat.ClientCompatMessage) (resp []
 	return stdout.Bytes(), "", nil
 }
 
-func runClientNoop(serverURL string, clientBin string) (resp *clientcompat.Empty, twirpErrCode string, err error) {
+func runClientNoop(serverURL string, clientBin string) (resp *clientcompat.Empty, twirkErrCode string, err error) {
 	req := &clientcompat.Empty{}
 	reqBytes, err := proto.Marshal(req)
 	if err != nil {
@@ -81,7 +81,7 @@ func runClientNoop(serverURL string, clientBin string) (resp *clientcompat.Empty
 	return resp, code, nil
 }
 
-func runClientMethod(serverURL string, clientBin string, req *clientcompat.Req) (resp *clientcompat.Resp, twirpErrCode string, err error) {
+func runClientMethod(serverURL string, clientBin string, req *clientcompat.Req) (resp *clientcompat.Resp, twirkErrCode string, err error) {
 	reqBytes, err := proto.Marshal(req)
 	if err != nil {
 		return nil, "", errors.Wrap(err, "unable to marshal Req")

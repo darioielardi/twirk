@@ -16,12 +16,12 @@ const users = [
 ];
 
 const siteConfig = {
-    title: 'Twirp' /* title for your website */,
+    title: 'twirk' /* title for your website */,
     tagline: 'Simple RPC framework powered by protobuf',
     url: 'https://twitchtv.github.io' /* your website url */,
-    baseUrl: '/twirp/' /* base url for your project */,
+    baseUrl: '/twirk/' /* base url for your project */,
     organizationName: 'twitchtv',
-    projectName: 'twirp',
+    projectName: 'twirk',
     headerLinks: [
         {doc: 'intro', label: 'Docs'},
         {doc: 'spec_v5', label: 'Spec'},
@@ -45,7 +45,7 @@ const siteConfig = {
     },
     scripts: ['https://buttons.github.io/buttons.js'],
     // You may provide arbitrary config keys to be used as needed by your template.
-    repoUrl: 'https://github.com/twitchtv/twirp',
+    repoUrl: 'https://github.com/darioielardi/twirk',
 };
 
 module.exports = siteConfig;

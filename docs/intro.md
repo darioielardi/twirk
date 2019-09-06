@@ -1,22 +1,22 @@
 ---
 id: intro
-title: Meet Twirp!
+title: Meet twirk!
 sidebar_label: Overview
 ---
 
-Twirp is a simple RPC framework built on
+twirk is a simple RPC framework built on
 [protobuf](https://developers.google.com/protocol-buffers/). You define a
-service in a `.proto` specification file, then Twirp will _generate_ servers and
+service in a `.proto` specification file, then twirk will _generate_ servers and
 clients for that service. It's your job to fill in the "business logic" that
 powers the server, and then generated clients can consume your service straight
 away.
 
-This doc is an overview of how you use Twirp - how you interact with it, what
+This doc is an overview of how you use twirk - how you interact with it, what
 you write, and what it generates.
 
-## Making a Twirp Service
+## Making a twirk Service
 
-To make a Twirp service:
+To make a twirk service:
 
   1. Define your service in a **Proto** file.
   2. Use the `protoc` command to generate go code from the **Proto** file, it
@@ -28,7 +28,7 @@ For example, a HelloWorld **Proto** file:
 
 ```protobuf
 syntax = "proto3";
-package twitch.twirp.example.helloworld;
+package twitch.twirk.example.helloworld;
 option go_package = "helloworld";
 
 service HelloWorld {
@@ -44,7 +44,7 @@ message HelloResp {
 }
 ```
 
-From which Twirp can auto-generate this **interface** (running the `protoc` command):
+From which twirk can auto-generate this **interface** (running the `protoc` command):
 
 ```go
 type HelloWorld interface {
@@ -61,7 +61,7 @@ import (
 	"context"
 	"net/http"
 
-	pb "github.com/twitchtv/twirp-example/rpc/helloworld"
+	pb "github.com/darioielardi/twirk-example/rpc/helloworld"
 )
 
 type HelloWorldServer struct{}
@@ -72,12 +72,12 @@ func (s *HelloWorldServer) Hello(ctx context.Context, req *pb.HelloReq) (*pb.Hel
 
 // Run the implementation in a local server
 func main() {
-	twirpHandler := pb.NewHelloWorldServer(&HelloWorldServer{}, nil)
+	twirkHandler := pb.NewHelloWorldServer(&HelloWorldServer{}, nil)
 	// You can use any mux you like - NewHelloWorldServer gives you an http.Handler.
 	mux := http.NewServeMux()
 	// The generated code includes a method, PathPrefix(), which
 	// can be used to mount your service on a mux.
-	mux.Handle(twirpHandler.PathPrefix(), twirpHandler)
+	mux.Handle(twirkHandler.PathPrefix(), twirkHandler)
 	http.ListenAndServe(":8080", mux)
 }
 ```
@@ -92,7 +92,7 @@ import (
 	"fmt"
 	"net/http"
 
-	pb "github.com/twitchtv/twirp-example/rpc/helloworld"
+	pb "github.com/darioielardi/twirk-example/rpc/helloworld"
 )
 
 func main() {
@@ -107,7 +107,7 @@ func main() {
 
 ## Why this is good
 
-There's no need to worry about JSON serialization or HTTP verbs/routes! Twirp
+There's no need to worry about JSON serialization or HTTP verbs/routes! twirk
 [routing and serialization](routing.md) handles that for you, reducing the risk
 of introducing bugs. Both JSON and Protobuf are supported. The
 [Protobuf protocol](https://developers.google.com/protocol-buffers/docs/proto3)
@@ -118,9 +118,9 @@ the Proto file.
 
 ## What's next?
 
- * [Install Twirp](install.md): instructions to install or upgrade Twirp tools
-   for code auto-generation (protoc, protoc-gen-go and protoc-gen-twirp).
+ * [Install twirk](install.md): instructions to install or upgrade twirk tools
+   for code auto-generation (protoc, protoc-gen-go and protoc-gen-twirk).
  * [Usage Example](example.md): step by step guide to build an awesome
    Haberdasher service.
- * [How Twirp routes requests](routing.md): learn more about how Twirp works
+ * [How twirk routes requests](routing.md): learn more about how twirk works
    under the covers.

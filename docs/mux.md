@@ -1,22 +1,22 @@
 ---
 id: "mux"
-title: "Muxing Twirp services"
-sidebar_label: "Muxing Twirp with other HTTP services"
+title: "Muxing twirk services"
+sidebar_label: "Muxing twirk with other HTTP services"
 ---
 
 If you want run your server next to other `http.Handler`s, you'll need to use a
 mux. The generated code includes a path prefix that you can use for routing
-Twirp requests correctly. It's an exported string const, always as
-`<ServiceName>PathPrefix`, and it is the prefix for all Twirp requests.
+twirk requests correctly. It's an exported string const, always as
+`<ServiceName>PathPrefix`, and it is the prefix for all twirk requests.
 
 For example, you could use it with [`http.ServeMux`](https://golang.org/pkg/net/http/#ServeMux) like this:
 
 ```go
 server := &haberdasherserver.Server{}
-twirpHandler := haberdasher.NewHaberdasherServer(server, nil)
+twirkHandler := haberdasher.NewHaberdasherServer(server, nil)
 
 mux := http.NewServeMux()
-mux.Handle(twirpHandler.PathPrefix(), twirpHandler)
+mux.Handle(twirkHandler.PathPrefix(), twirkHandler)
 mux.Handle("/some/other/path", someOtherHandler)
 
 http.ListenAndServe(":8080", mux)
@@ -27,10 +27,10 @@ You can also serve your Handler on many third-party muxes which accept
 
 ```go
 server := &haberdasherserver.Server{} // implements Haberdasher interface
-twirpHandler := haberdasher.NewHaberdasherServer(server, nil)
+twirkHandler := haberdasher.NewHaberdasherServer(server, nil)
 
 mux := goji.NewMux()
-mux.Handle(pat.Post(twirpHandler.PathPrefix()+"*"), twirpHandler)
+mux.Handle(pat.Post(twirkHandler.PathPrefix()+"*"), twirkHandler)
 // mux.Handle other things like health checks ...
 http.ListenAndServe("localhost:8000", mux)
 ```

@@ -1,44 +1,44 @@
 ---
 id: "spec_v5"
-title: "Twirp Wire Protocol"
+title: "twirk Wire Protocol"
 sidebar_label: "Version 5 (Latest)"
 ---
 
-This document defines the Twirp wire protocol over HTTP. The
+This document defines the twirk wire protocol over HTTP. The
 current protocol version is v5.
 
 ## Overview
 
-The Twirp wire protocol is a simple RPC protocol based on HTTP and
+The twirk wire protocol is a simple RPC protocol based on HTTP and
 Protocol Buffers (proto). The protocol uses HTTP URLs to specify the
 RPC endpoints, and sends/receives proto messages as HTTP
 request/response bodies.
 
-To use Twirp, developers first define their APIs using proto files,
-then use Twirp tools to generate the client and the server libraries.
-The generated libraries implement the Twirp wire protocol, using the
+To use twirk, developers first define their APIs using proto files,
+then use twirk tools to generate the client and the server libraries.
+The generated libraries implement the twirk wire protocol, using the
 standard HTTP library provided by the programming language runtime or
 the operating system. Once the client and the server are implemented,
 the client can communicate with the server by making RPC calls.
 
-The Twirp wire protocol supports both binary and JSON encodings of
+The twirk wire protocol supports both binary and JSON encodings of
 proto messages, and works with any HTTP client and any HTTP version.
 
 ### URLs
 
-In [ABNF syntax](https://tools.ietf.org/html/rfc5234), Twirp's URLs
+In [ABNF syntax](https://tools.ietf.org/html/rfc5234), twirk's URLs
 have the following format:
 
 ```abnf
-URL ::= Base-URL "/twirp/" [ Package "." ] Service "/" Method
+URL ::= Base-URL "/twirk/" [ Package "." ] Service "/" Method
 ```
 
-The Twirp wire protocol uses HTTP URLs to specify the RPC
+The twirk wire protocol uses HTTP URLs to specify the RPC
 endpoints on the server for sending the requests. Such direct mapping
-makes the request routing simple and efficient. The Twirp URLs have
+makes the request routing simple and efficient. The twirk URLs have
 the following components.
 
-* **Base-URL** is the virtual location of a Twirp API server, which is
+* **Base-URL** is the virtual location of a twirk API server, which is
   typically published via API documentation or service discovery.
   Currently, it should only contain URL `scheme` and `authority`. For
   example, "https://example.com".
@@ -53,10 +53,10 @@ the following components.
 
 ### Requests
 
-Twirp always uses HTTP POST method to send requests, because it
+twirk always uses HTTP POST method to send requests, because it
 closely matches the semantics of RPC methods.
 
-The **Request-Headers** are normal HTTP headers. The Twirp wire
+The **Request-Headers** are normal HTTP headers. The twirk wire
 protocol uses the following headers.
 
 * **Content-Type** header indicates the proto message encoding, which
@@ -71,7 +71,7 @@ header.
 ### Responses
 
 The **Response-Headers** are just normal HTTP response headers. The
-Twirp wire protocol uses the following headers.
+twirk wire protocol uses the following headers.
 
 * **Content-Type** The value should be either "application/protobuf"
   or "application/json" to indicate the encoding of the response
@@ -109,7 +109,7 @@ message HelloResponse {
 **Proto Request**
 
 ```
-POST /twirp/example.echoer.Echo/Hello HTTP/1.1
+POST /twirk/example.echoer.Echo/Hello HTTP/1.1
 Host: example.com
 Content-Type: application/protobuf
 Content-Length: 15
@@ -120,7 +120,7 @@ Content-Length: 15
 **JSON Request**
 
 ```
-POST /twirp/example.echoer.Echo/Hello HTTP/1.1
+POST /twirk/example.echoer.Echo/Hello HTTP/1.1
 Host: example.com
 Content-Type: application/json
 Content-Length: 27
@@ -151,14 +151,14 @@ Content-Length: 27
 
 ## Errors
 
-Twirp error responses are always JSON-encoded, regardless of
+twirk error responses are always JSON-encoded, regardless of
 the request's Content-Type, with a corresponding
 `Content-Type: application/json` header. This ensures that
 the errors are human-readable in any setting.
 
-Twirp errors are a JSON object with the keys:
+twirk errors are a JSON object with the keys:
 
-* **code**: One of the Twirp error codes as a string.
+* **code**: One of the twirk error codes as a string.
 * **msg**: A human-readable message describing the error
   as a string.
 * **meta**: (optional) An object with string values holding
@@ -188,13 +188,13 @@ Example with metadata:
 
 ### Error Codes
 
-Twirp errors always include an error code. This code is represented
+twirk errors always include an error code. This code is represented
 as a string and must be one of a fixed set of codes, listed in the 
 table below. Each code has an associated HTTP Status Code. When a 
 server responds with the given error code, it must set the 
 corresponding HTTP Status Code for the response.
 
-| Twirp Error Code    | HTTP Status | Description
+| twirk Error Code    | HTTP Status | Description
 | ------------------- | ----------- | -----------
 | canceled            | 408 | The operation was cancelled.
 | unknown             | 500 | An unknown error occurred. For example, this can be used when handling errors raised by APIs that do not return any error information.
@@ -202,7 +202,7 @@ corresponding HTTP Status Code for the response.
 | malformed           | 400 | The client sent a message which could not be decoded. This may mean that the message was encoded improperly or that the client and server have incompatible message definitions.
 | deadline_exceeded   | 408 | Operation expired before completion. For operations that change the state of the system, this error may be returned even if the operation has completed successfully (timeout).
 | not_found           | 404 | Some requested entity was not found.
-| bad_route           | 404 | The requested URL path wasn't routable to a Twirp service and method. This is returned by generated server code and should not be returned by application code (use "not_found" or "unimplemented" instead).
+| bad_route           | 404 | The requested URL path wasn't routable to a twirk service and method. This is returned by generated server code and should not be returned by application code (use "not_found" or "unimplemented" instead).
 | already_exists      | 409 | An attempt to create an entity failed because one already exists.
 | permission_denied   | 403 | The caller does not have permission to execute the specified operation. It must not be used if the caller cannot be identified (use "unauthenticated" instead).
 | unauthenticated     | 401 | The request does not have valid authentication credentials for the operation.
@@ -211,7 +211,7 @@ corresponding HTTP Status Code for the response.
 | aborted             | 409 | The operation was aborted, typically due to a concurrency issue like sequencer check failures, transaction aborts, etc.
 | out_of_range        | 400 | The operation was attempted past the valid range. For example, seeking or reading past end of a paginated collection. Unlike "invalid_argument", this error indicates a problem that may be fixed if the system state changes (i.e. adding more items to the collection). There is a fair bit of overlap between "failed_precondition" and "out_of_range". We recommend using "out_of_range" (the more specific error) when it applies so that callers who are iterating through a space can easily look for an "out_of_range" error to detect when they are done.
 | unimplemented       | 501 | The operation is not implemented or not supported/enabled in this service.
-| internal            | 500 | When some invariants expected by the underlying system have been broken. In other words, something bad happened in the library or backend service. Twirp specific issues like wire and serialization problems are also reported as "internal" errors.
+| internal            | 500 | When some invariants expected by the underlying system have been broken. In other words, something bad happened in the library or backend service. twirk specific issues like wire and serialization problems are also reported as "internal" errors.
 | unavailable         | 503 | The service is currently unavailable. This is most likely a transient condition and may be corrected by retrying with a backoff.
 | dataloss            | 500 | The operation resulted in unrecoverable data loss or corruption.
 

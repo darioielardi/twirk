@@ -17,9 +17,9 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='empty_service.proto',
-  package='twirp.internal.twirptest.emptyservice',
+  package='twirk.internal.twirktest.emptyservice',
   syntax='proto3',
-  serialized_pb=_b('\n\x13\x65mpty_service.proto\x12%twirp.internal.twirptest.emptyservice2\x07\n\x05\x45mptyB\x0fZ\rempty_serviceb\x06proto3')
+  serialized_pb=_b('\n\x13\x65mpty_service.proto\x12%twirk.internal.twirktest.emptyservice2\x07\n\x05\x45mptyB\x0fZ\rempty_serviceb\x06proto3')
 )
 
 
@@ -32,7 +32,7 @@ DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b
 
 _EMPTY = _descriptor.ServiceDescriptor(
   name='Empty',
-  full_name='twirp.internal.twirptest.emptyservice.Empty',
+  full_name='twirk.internal.twirktest.emptyservice.Empty',
   file=DESCRIPTOR,
   index=0,
   options=None,

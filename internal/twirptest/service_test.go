@@ -11,7 +11,7 @@
 // express or implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-package twirptest
+package twirktest
 
 import (
 	"bytes"
@@ -32,8 +32,8 @@ import (
 	"github.com/golang/protobuf/jsonpb"
 	pkgerrors "github.com/pkg/errors"
 
-	"github.com/twitchtv/twirp"
-	"github.com/twitchtv/twirp/internal/descriptors"
+	"github.com/darioielardi/twirk"
+	"github.com/darioielardi/twirk/internal/descriptors"
 )
 
 func TestServeJSON(t *testing.T) {
@@ -294,10 +294,10 @@ func (r *requestRecorder) assertHookCalls(t *testing.T, want []hookCall) {
 	}
 }
 
-func recorderHooks() (*twirp.ServerHooks, *requestRecorder) {
+func recorderHooks() (*twirk.ServerHooks, *requestRecorder) {
 	recs := &requestRecorder{}
 
-	hooks := &twirp.ServerHooks{
+	hooks := &twirk.ServerHooks{
 		RequestReceived: func(ctx context.Context) (context.Context, error) {
 			recs.Lock()
 			recs.calls = append(recs.calls, received)
@@ -321,7 +321,7 @@ func recorderHooks() (*twirp.ServerHooks, *requestRecorder) {
 			recs.calls = append(recs.calls, sent)
 			recs.Unlock()
 		},
-		Error: func(ctx context.Context, _ twirp.Error) context.Context {
+		Error: func(ctx context.Context, _ twirk.Error) context.Context {
 			recs.Lock()
 			recs.calls = append(recs.calls, errored)
 			recs.Unlock()
@@ -451,10 +451,10 @@ func TestHooks(t *testing.T) {
 	})
 }
 
-// Test that a Twirp server will work even if it receives a ServiceHooks with a
+// Test that a twirk server will work even if it receives a ServiceHooks with a
 // nil function for one of its hooks.
 func TestNilHooks(t *testing.T) {
-	var testcase = func(hooks *twirp.ServerHooks) func(*testing.T) {
+	var testcase = func(hooks *twirk.ServerHooks) func(*testing.T) {
 		return func(t *testing.T) {
 			h := PickyHatmaker(1)
 			s := httptest.NewServer(NewHaberdasherServer(h, hooks))
@@ -493,8 +493,8 @@ func TestErroringHooks(t *testing.T) {
 		// Set up hooks that error on request received. The request should be
 		// aborted at that point, the Error hook should be triggered, and the client
 		// should see an error.
-		hooks := &twirp.ServerHooks{}
-		hookErr := twirp.NewError(twirp.Unauthenticated, "error in hook")
+		hooks := &twirk.ServerHooks{}
+		hookErr := twirk.NewError(twirk.Unauthenticated, "error in hook")
 		errorHookCalled := false
 		hooks.RequestReceived = func(ctx context.Context) (context.Context, error) {
 			return ctx, hookErr
@@ -503,7 +503,7 @@ func TestErroringHooks(t *testing.T) {
 			t.Errorf("request was routed")
 			return ctx, nil
 		}
-		hooks.Error = func(ctx context.Context, err twirp.Error) context.Context {
+		hooks.Error = func(ctx context.Context, err twirk.Error) context.Context {
 			if err != hookErr {
 				t.Errorf("Error hook did not receive error from RequestReceived. have=%v, want=%v", err, hookErr)
 			}
@@ -519,13 +519,13 @@ func TestErroringHooks(t *testing.T) {
 		if err == nil {
 			t.Fatalf("client err=nil, expected=%v", hookErr)
 		}
-		twerr, ok := err.(twirp.Error)
+		twerr, ok := err.(twirk.Error)
 		if !ok {
-			t.Fatalf("client err type=%T, expected twirp.Error", err)
+			t.Fatalf("client err type=%T, expected twirk.Error", err)
 		}
 
-		if twerr.Code() != twirp.Unauthenticated {
-			t.Errorf("client err code=%v, expected=%v", twerr.Code(), twirp.Unauthenticated)
+		if twerr.Code() != twirk.Unauthenticated {
+			t.Errorf("client err code=%v, expected=%v", twerr.Code(), twirk.Unauthenticated)
 		}
 
 		if !errorHookCalled {
@@ -537,13 +537,13 @@ func TestErroringHooks(t *testing.T) {
 		// Set up hooks that error on request routed. The request should be aborted
 		// at that point, the Error hook should be triggered, and the client should
 		// see an error.
-		hooks := &twirp.ServerHooks{}
-		hookErr := twirp.NewError(twirp.Unauthenticated, "error in hook")
+		hooks := &twirk.ServerHooks{}
+		hookErr := twirk.NewError(twirk.Unauthenticated, "error in hook")
 		errorHookCalled := false
 		hooks.RequestRouted = func(ctx context.Context) (context.Context, error) {
 			return ctx, hookErr
 		}
-		hooks.Error = func(ctx context.Context, err twirp.Error) context.Context {
+		hooks.Error = func(ctx context.Context, err twirk.Error) context.Context {
 			if err != hookErr {
 				t.Errorf("Error hook did not receive error from RequestRouted. have=%v, want=%v", err, hookErr)
 			}
@@ -559,13 +559,13 @@ func TestErroringHooks(t *testing.T) {
 		if err == nil {
 			t.Fatalf("client err=nil, expected=%v", hookErr)
 		}
-		twerr, ok := err.(twirp.Error)
+		twerr, ok := err.(twirk.Error)
 		if !ok {
-			t.Fatalf("client err type=%T, expected twirp.Error", err)
+			t.Fatalf("client err type=%T, expected twirk.Error", err)
 		}
 
-		if twerr.Code() != twirp.Unauthenticated {
-			t.Errorf("client err code=%v, expected=%v", twerr.Code(), twirp.Unauthenticated)
+		if twerr.Code() != twirk.Unauthenticated {
+			t.Errorf("client err code=%v, expected=%v", twerr.Code(), twirk.Unauthenticated)
 		}
 
 		if !errorHookCalled {
@@ -575,7 +575,7 @@ func TestErroringHooks(t *testing.T) {
 }
 
 func TestInternalErrorPassing(t *testing.T) {
-	e := twirp.InternalError("fatal :(")
+	e := twirk.InternalError("fatal :(")
 
 	h := ErroringHatmaker(e)
 	s, c := ServerAndClient(h, nil)
@@ -586,12 +586,12 @@ func TestInternalErrorPassing(t *testing.T) {
 		t.Fatal("expected err, have nil")
 	}
 
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
 
-	if twerr.Code() != twirp.Internal {
+	if twerr.Code() != twirk.Internal {
 		t.Errorf("expected error type to be Internal, buf found %q", twerr.Code())
 	}
 	if twerr.Meta("retryable") != "" {
@@ -604,7 +604,7 @@ func TestInternalErrorPassing(t *testing.T) {
 
 func TestErrorWithRetryableMeta(t *testing.T) {
 	eMsg := "try again!"
-	e := twirp.NewError(twirp.Unavailable, eMsg)
+	e := twirk.NewError(twirk.Unavailable, eMsg)
 	e = e.WithMeta("retryable", "true")
 
 	h := ErroringHatmaker(e)
@@ -616,9 +616,9 @@ func TestErrorWithRetryableMeta(t *testing.T) {
 		t.Fatal("expected err, have nil")
 	}
 
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
 
 	if twerr.Meta("retryable") != "true" {
@@ -630,7 +630,7 @@ func TestErrorWithRetryableMeta(t *testing.T) {
 }
 
 func TestErrorCodePassing(t *testing.T) {
-	e := twirp.NewError(twirp.AlreadyExists, "hand-picked ErrorCode")
+	e := twirk.NewError(twirk.AlreadyExists, "hand-picked ErrorCode")
 
 	h := ErroringHatmaker(e)
 	s, c := ServerAndClient(h, nil)
@@ -641,19 +641,19 @@ func TestErrorCodePassing(t *testing.T) {
 		t.Fatal("expected err, have nil")
 	}
 
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
 
-	if twerr.Code() != twirp.AlreadyExists {
-		t.Errorf("expected ErrorCode to be passed through to the client to be %q, but have %q", twirp.AlreadyExists, twerr.Code())
+	if twerr.Code() != twirk.AlreadyExists {
+		t.Errorf("expected ErrorCode to be passed through to the client to be %q, but have %q", twirk.AlreadyExists, twerr.Code())
 	}
 }
 
-// Non twirp errors returned by the servers should become twirp Internal errors.
-func TestNonTwirpErrorWrappedAsInternal(t *testing.T) {
-	e := errors.New("I am not a twirp error, should become internal")
+// Non twirk errors returned by the servers should become twirk Internal errors.
+func TestNontwirkErrorWrappedAsInternal(t *testing.T) {
+	e := errors.New("I am not a twirk error, should become internal")
 
 	h := ErroringHatmaker(e)
 	s, c := ServerAndClient(h, nil)
@@ -664,16 +664,16 @@ func TestNonTwirpErrorWrappedAsInternal(t *testing.T) {
 		t.Fatal("expected err, found nil")
 	}
 
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected error type to be 'twirp.Error', but found %T", err)
+		t.Fatalf("expected error type to be 'twirk.Error', but found %T", err)
 	}
 
-	if twerr.Code() != twirp.Internal {
-		t.Errorf("expected ErrorCode to be %q, but found %q", twirp.Internal, twerr.Code())
+	if twerr.Code() != twirk.Internal {
+		t.Errorf("expected ErrorCode to be %q, but found %q", twirk.Internal, twerr.Code())
 	}
 
-	if twerr.Msg() != e.Error() { // NOTE: that twerr.Error() is not e.Error() because it has a "twirp error Internal: *" prefix
+	if twerr.Msg() != e.Error() { // NOTE: that twerr.Error() is not e.Error() because it has a "twirk error Internal: *" prefix
 		t.Errorf("expected Msg to be %q, but found %q", e.Error(), twerr.Msg())
 	}
 }
@@ -712,22 +712,22 @@ func TestConnectTLS(t *testing.T) {
 	}
 }
 
-// It should be possible to serve twirp alongside non-twirp handlers
-func TestMuxingTwirpServerConst(t *testing.T) {
-	// Create a twirp endpoint.
-	twirpHandler := NewHaberdasherServer(PickyHatmaker(1), nil)
+// It should be possible to serve twirk alongside non-twirk handlers
+func TestMuxingtwirkServerConst(t *testing.T) {
+	// Create a twirk endpoint.
+	twirkHandler := NewHaberdasherServer(PickyHatmaker(1), nil)
 
-	testMuxingTwirpServer(t, HaberdasherPathPrefix, twirpHandler)
+	testMuxingtwirkServer(t, HaberdasherPathPrefix, twirkHandler)
 }
 
-func TestMuxingTwirpServerPrefixMethod(t *testing.T) {
-	// Create a twirp endpoint.
-	twirpHandler := NewHaberdasherServer(PickyHatmaker(1), nil)
+func TestMuxingtwirkServerPrefixMethod(t *testing.T) {
+	// Create a twirk endpoint.
+	twirkHandler := NewHaberdasherServer(PickyHatmaker(1), nil)
 
-	testMuxingTwirpServer(t, twirpHandler.PathPrefix(), twirpHandler)
+	testMuxingtwirkServer(t, twirkHandler.PathPrefix(), twirkHandler)
 }
 
-func testMuxingTwirpServer(t *testing.T, prefix string, handler TwirpServer) {
+func testMuxingtwirkServer(t *testing.T, prefix string, handler twirkServer) {
 	// Create a healthcheck endpoint. Record that it got called in a boolean.
 	healthcheckCalled := false
 	healthcheck := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -739,7 +739,7 @@ func testMuxingTwirpServer(t *testing.T, prefix string, handler TwirpServer) {
 		}
 	})
 
-	// Serve the healthcheck at /health and the twirp handler at the
+	// Serve the healthcheck at /health and the twirk handler at the
 	// provided URL prefix.
 	mux := http.NewServeMux()
 	mux.Handle("/health", healthcheck)
@@ -748,12 +748,12 @@ func testMuxingTwirpServer(t *testing.T, prefix string, handler TwirpServer) {
 	s := httptest.NewServer(mux)
 	defer s.Close()
 
-	// Try to do a twirp request. It should get routed just fine.
+	// Try to do a twirk request. It should get routed just fine.
 	client := NewHaberdasherJSONClient(s.URL, http.DefaultClient)
 
 	_, twerr := client.MakeHat(context.Background(), &Size{Inches: 1})
 	if twerr != nil {
-		t.Errorf("twirp client err=%q", twerr)
+		t.Errorf("twirk client err=%q", twerr)
 	}
 
 	// Try to request the /health endpoint. It should get routed just
@@ -777,11 +777,11 @@ func testMuxingTwirpServer(t *testing.T, prefix string, handler TwirpServer) {
 // Default ContextSource should be RequestContextSource, this means that
 // when serving in a mux with middleware, the modified request context should
 // be available on the method handler.
-func TestMuxingTwirpServerDefaultRequestContext(t *testing.T) {
+func TestMuxingtwirkServerDefaultRequestContext(t *testing.T) {
 	handlerCalled := false // to verity that the handler assertions were executed (avoid false positives)
 
 	// Make a handler that can check if the context was modified
-	twirpHandler := NewHaberdasherServer(HaberdasherFunc(func(ctx context.Context, s *Size) (*Hat, error) {
+	twirkHandler := NewHaberdasherServer(HaberdasherFunc(func(ctx context.Context, s *Size) (*Hat, error) {
 		handlerCalled = true // verify it was called
 		if ctx.Value("modified by middleware") != "yes" {
 			t.Error("expected ctx to be modified by the middleware")
@@ -792,7 +792,7 @@ func TestMuxingTwirpServerDefaultRequestContext(t *testing.T) {
 	// Wrap with middleware that modifies the request context
 	middlewareWrapper := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		r = r.WithContext(context.WithValue(r.Context(), "modified by middleware", "yes"))
-		twirpHandler.ServeHTTP(w, r)
+		twirkHandler.ServeHTTP(w, r)
 	})
 
 	// Serve in a mux
@@ -805,66 +805,66 @@ func TestMuxingTwirpServerDefaultRequestContext(t *testing.T) {
 	client := NewHaberdasherJSONClient(s.URL, http.DefaultClient)
 	_, twerr := client.MakeHat(context.Background(), &Size{Inches: 1})
 	if twerr != nil {
-		t.Errorf("twirp client err=%q", twerr)
+		t.Errorf("twirk client err=%q", twerr)
 	}
 	if !handlerCalled {
-		t.Error("For some reason the twirp request did not make it to the handler")
+		t.Error("For some reason the twirk request did not make it to the handler")
 	}
 }
 
 // WriteError should allow middleware to easily respond with a properly formatted error response
 func TestWriteErrorFromHTTPMiddleware(t *testing.T) {
-	// Make a fake server that returns a Twirp error from the HTTP stack, without using an actual Twirp implementation.
+	// Make a fake server that returns a twirk error from the HTTP stack, without using an actual twirk implementation.
 	mux := http.NewServeMux()
 	mux.HandleFunc(HaberdasherPathPrefix+"MakeHat", func(w http.ResponseWriter, r *http.Request) {
-		WriteError(w, twirp.NewError(twirp.Unauthenticated, "You Shall Not Pass!!!"))
+		WriteError(w, twirk.NewError(twirk.Unauthenticated, "You Shall Not Pass!!!"))
 	})
 	server := httptest.NewServer(mux)
 	defer server.Close()
 
-	// A Twirp client is still able to receive the error
+	// A twirk client is still able to receive the error
 	client := NewHaberdasherJSONClient(server.URL, http.DefaultClient)
 	_, err := client.MakeHat(context.Background(), &Size{Inches: 1})
 	if err == nil {
 		t.Fatal("an error was expected")
 	}
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
-	if twerr.Code() != twirp.Unauthenticated {
-		t.Errorf("twirp ErrorCode expected to be %q, but found %q", twirp.Unauthenticated, twerr.Code())
+	if twerr.Code() != twirk.Unauthenticated {
+		t.Errorf("twirk ErrorCode expected to be %q, but found %q", twirk.Unauthenticated, twerr.Code())
 	}
 	if twerr.Msg() != "You Shall Not Pass!!!" {
-		t.Errorf("twirp client err has unexpected message %q, want %q", twerr.Msg(), "You Shall Not Pass!!!")
+		t.Errorf("twirk client err has unexpected message %q, want %q", twerr.Msg(), "You Shall Not Pass!!!")
 	}
 }
 
-// WriteError wraps non-twirp errors as twirp.Internal
+// WriteError wraps non-twirk errors as twirk.Internal
 func TestWriteErrorFromHTTPMiddlewareInternal(t *testing.T) {
-	// Make a fake server that returns an error from the HTTP stack, without using an actual Twirp implementation.
+	// Make a fake server that returns an error from the HTTP stack, without using an actual twirk implementation.
 	mux := http.NewServeMux()
 	mux.HandleFunc(HaberdasherPathPrefix+"MakeHat", func(w http.ResponseWriter, r *http.Request) {
-		WriteError(w, errors.New("should become a twirp.Internal"))
+		WriteError(w, errors.New("should become a twirk.Internal"))
 	})
 	server := httptest.NewServer(mux)
 	defer server.Close()
 
-	// A Twirp client is still able to receive the error as a twirp.Internal
+	// A twirk client is still able to receive the error as a twirk.Internal
 	client := NewHaberdasherJSONClient(server.URL, http.DefaultClient)
 	_, err := client.MakeHat(context.Background(), &Size{Inches: 1})
 	if err == nil {
 		t.Fatal("an error was expected")
 	}
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
-	if twerr.Code() != twirp.Internal {
-		t.Errorf("twirp ErrorCode expected to be %q, but found %q", twirp.Internal, twerr.Code())
+	if twerr.Code() != twirk.Internal {
+		t.Errorf("twirk ErrorCode expected to be %q, but found %q", twirk.Internal, twerr.Code())
 	}
-	if twerr.Msg() != "should become a twirp.Internal" {
-		t.Errorf("twirp client err has unexpected message %q, want %q", twerr.Msg(), "should become a twirp.Internal")
+	if twerr.Msg() != "should become a twirk.Internal" {
+		t.Errorf("twirk client err has unexpected message %q, want %q", twerr.Msg(), "should become a twirk.Internal")
 	}
 }
 
@@ -873,7 +873,7 @@ func TestPanicsReturnInternalErrors(t *testing.T) {
 	hooks, recorder := recorderHooks()
 	s := NewHaberdasherServer(PanickyHatmaker("OH NO!"), hooks)
 
-	// Wrap the twirp server with a handler to stop the panicking from
+	// Wrap the twirk server with a handler to stop the panicking from
 	// crashing the httptest server and failing our test.
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
@@ -892,19 +892,19 @@ func TestPanicsReturnInternalErrors(t *testing.T) {
 	hat, err := client.MakeHat(context.Background(), &Size{Inches: 1})
 	if err == nil {
 		t.Logf("hat: %+v", hat)
-		t.Fatal("twirp client err is nil for panicking handler")
+		t.Fatal("twirk client err is nil for panicking handler")
 	}
 
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
 
-	if twerr.Code() != twirp.Internal {
-		t.Errorf("twirp ErrorCode expected to be %q, but found %q", twirp.Internal, twerr.Code())
+	if twerr.Code() != twirk.Internal {
+		t.Errorf("twirk ErrorCode expected to be %q, but found %q", twirk.Internal, twerr.Code())
 	}
 	if twerr.Msg() != "Internal service panic" {
-		t.Errorf("twirp client err has unexpected message %q, want %q", twerr.Msg(), "Internal service panic")
+		t.Errorf("twirk client err has unexpected message %q, want %q", twerr.Msg(), "Internal service panic")
 	}
 
 	recorder.assertHookCalls(t, []hookCall{received, routed, errored, sent})
@@ -914,8 +914,8 @@ func TestPanicsReturnInternalErrors(t *testing.T) {
 func TestPanicsTriggerErrorHooks(t *testing.T) {
 	panicValue := errors.New("This Is Fine Meme")
 	errHookCalled := false
-	errHook := &twirp.ServerHooks{
-		Error: func(ctx context.Context, twerr twirp.Error) context.Context {
+	errHook := &twirk.ServerHooks{
+		Error: func(ctx context.Context, twerr twirk.Error) context.Context {
 			errHookCalled = true
 			// The error should have a .Cause containing the panic value for inspection
 			err := pkgerrors.Cause(twerr)
@@ -928,7 +928,7 @@ func TestPanicsTriggerErrorHooks(t *testing.T) {
 
 	s := NewHaberdasherServer(PanickyHatmaker(panicValue), errHook)
 
-	// Wrap the twirp server with a handler to stop the panicking from
+	// Wrap the twirk server with a handler to stop the panicking from
 	// crashing the httptest server and failing our test.
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
@@ -956,12 +956,12 @@ func TestPanicsTriggerErrorHooks(t *testing.T) {
 		}
 		errHookCalled = false // Reset for the next loop iteration
 
-		twerr, ok := err.(twirp.Error)
+		twerr, ok := err.(twirk.Error)
 		if !ok {
-			t.Fatalf("%s client: expected twirp.Error type error, have %T", name, err)
+			t.Fatalf("%s client: expected twirk.Error type error, have %T", name, err)
 		}
-		if twerr.Code() != twirp.Internal {
-			t.Errorf("%s client: ErrorCode expected to be %q, but found %q", name, twirp.Internal, twerr.Code())
+		if twerr.Code() != twirk.Internal {
+			t.Errorf("%s client: ErrorCode expected to be %q, but found %q", name, twirk.Internal, twerr.Code())
 		}
 		if twerr.Msg() != "Internal service panic" {
 			t.Errorf("%s client: err has unexpected message %q, want %q", name, twerr.Msg(), "Internal service panic")
@@ -998,7 +998,7 @@ func TestCustomRequestHeaders(t *testing.T) {
 	for name, c := range clients {
 		t.Logf("client=%q", name)
 		ctx := context.Background()
-		ctx, err := twirp.WithHTTPRequestHeaders(ctx, customHeader)
+		ctx, err := twirk.WithHTTPRequestHeaders(ctx, customHeader)
 		if err != nil {
 			t.Fatalf("%q client WithHTTPRequestHeaders err=%q", name, err)
 		}
@@ -1015,32 +1015,32 @@ func TestCustomResponseHeaders(t *testing.T) {
 		var err error
 		errMsg := "unexpected error returned by SetHTTPResponseHeader: "
 
-		err = twirp.SetHTTPResponseHeader(ctx, "key1", "val1")
+		err = twirk.SetHTTPResponseHeader(ctx, "key1", "val1")
 		if err != nil {
 			t.Fatalf(errMsg + err.Error())
 		}
 
-		err = twirp.SetHTTPResponseHeader(ctx, "key2", "before_override")
+		err = twirk.SetHTTPResponseHeader(ctx, "key2", "before_override")
 		if err != nil {
 			t.Fatalf(errMsg + err.Error())
 		}
-		err = twirp.SetHTTPResponseHeader(ctx, "key2", "val2") // should override
+		err = twirk.SetHTTPResponseHeader(ctx, "key2", "val2") // should override
 		if err != nil {
 			t.Fatalf(errMsg + err.Error())
 		}
 
 		childContext := context.WithValue(ctx, "foo", "var")
-		err = twirp.SetHTTPResponseHeader(childContext, "key3", "val3")
+		err = twirk.SetHTTPResponseHeader(childContext, "key3", "val3")
 		if err != nil {
 			t.Fatalf(errMsg + err.Error())
 		}
 
-		err = twirp.SetHTTPResponseHeader(context.Background(), "key4", "should_be_ignored")
+		err = twirk.SetHTTPResponseHeader(context.Background(), "key4", "should_be_ignored")
 		if err != nil {
 			t.Fatalf(errMsg + err.Error())
 		}
 
-		err = twirp.SetHTTPResponseHeader(context.Background(), "Content-Type", "should_return_error")
+		err = twirk.SetHTTPResponseHeader(context.Background(), "Content-Type", "should_return_error")
 		if err == nil {
 			t.Fatalf("SetHTTPResponseHeader expected to return an error on Content-Type header, found nil")
 		}
@@ -1113,13 +1113,13 @@ var expectBadRouteError = func(t *testing.T, client Haberdasher) {
 		t.Fatalf("err=nil, expected bad_route")
 	}
 
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("err has type=%T, expected twirp.Error", err)
+		t.Fatalf("err has type=%T, expected twirk.Error", err)
 	}
 
-	if twerr.Code() != twirp.BadRoute {
-		t.Errorf("err has code=%v, expected %v", twerr.Code(), twirp.BadRoute)
+	if twerr.Code() != twirk.BadRoute {
+		t.Errorf("err has code=%v, expected %v", twerr.Code(), twirk.BadRoute)
 	}
 }
 
@@ -1199,7 +1199,7 @@ func TestReflection(t *testing.T) {
 		if err != nil {
 			t.Fatalf("unable to load descriptor: %v", err)
 		}
-		if have, want := fd.GetPackage(), "twirp.internal.twirptest"; have != want {
+		if have, want := fd.GetPackage(), "twirk.internal.twirktest"; have != want {
 			t.Errorf("bad package name, have=%q, want=%q", have, want)
 		}
 
@@ -1213,23 +1213,23 @@ func TestReflection(t *testing.T) {
 			t.Errorf("bad method name, have=%q, want=%q", have, want)
 		}
 	})
-	t.Run("ProtoGenTwirpVersion", func(t *testing.T) {
-		// Should match whatever is in the file at protoc-gen-twirp/version.go
+	t.Run("ProtoGentwirkVersion", func(t *testing.T) {
+		// Should match whatever is in the file at protoc-gen-twirk/version.go
 		file, err := ioutil.ReadFile("../gen/version.go")
 		if err != nil {
 			t.Fatalf("unable to load version file: %v", err)
 		}
 		rexp, err := regexp.Compile(`const Version = "(.*)"`)
 		if err != nil {
-			t.Fatalf("unable to compile twirpVersion regex: %v", err)
+			t.Fatalf("unable to compile twirkVersion regex: %v", err)
 		}
 		matches := rexp.FindSubmatch(file)
 		if matches == nil {
-			t.Fatal("unable to find twirp version from version.go file")
+			t.Fatal("unable to find twirk version from version.go file")
 		}
 
 		want := string(matches[1])
-		have := s.ProtocGenTwirpVersion()
+		have := s.ProtocGentwirkVersion()
 		if have != want {
 			t.Errorf("bad version, have=%q, want=%q", have, want)
 		}
@@ -1239,18 +1239,18 @@ func TestReflection(t *testing.T) {
 func TestContextValues(t *testing.T) {
 	h := HaberdasherFunc(func(ctx context.Context, _ *Size) (*Hat, error) {
 		const (
-			wantPkg    = "twirp.internal.twirptest"
+			wantPkg    = "twirk.internal.twirktest"
 			wantSvc    = "Haberdasher"
 			wantMethod = "MakeHat"
 		)
-		if pkg, _ := twirp.PackageName(ctx); pkg != wantPkg {
-			t.Errorf("twirp.PackageName(ctx)  have=%q, want=%q", pkg, wantPkg)
+		if pkg, _ := twirk.PackageName(ctx); pkg != wantPkg {
+			t.Errorf("twirk.PackageName(ctx)  have=%q, want=%q", pkg, wantPkg)
 		}
-		if svc, _ := twirp.ServiceName(ctx); svc != wantSvc {
-			t.Errorf("twirp.ServiceName(ctx)  have=%q, want=%q", svc, wantSvc)
+		if svc, _ := twirk.ServiceName(ctx); svc != wantSvc {
+			t.Errorf("twirk.ServiceName(ctx)  have=%q, want=%q", svc, wantSvc)
 		}
-		if meth, _ := twirp.MethodName(ctx); meth != wantMethod {
-			t.Errorf("twirp.MethodName(ctx)  have=%q, want=%q", meth, wantMethod)
+		if meth, _ := twirk.MethodName(ctx); meth != wantMethod {
+			t.Errorf("twirk.MethodName(ctx)  have=%q, want=%q", meth, wantMethod)
 		}
 		return &Hat{}, nil
 	})
@@ -1278,17 +1278,17 @@ func TestPanicFlushing(t *testing.T) {
 	hat, err := client.MakeHat(context.Background(), &Size{Inches: 1})
 	if err == nil {
 		t.Logf("hat: %+v", hat)
-		t.Fatal("twirp client err is nil for panicking handler")
+		t.Fatal("twirk client err is nil for panicking handler")
 	}
-	twerr, ok := err.(twirp.Error)
+	twerr, ok := err.(twirk.Error)
 	if !ok {
-		t.Fatalf("expected twirp.Error type error, have %T", err)
+		t.Fatalf("expected twirk.Error type error, have %T", err)
 	}
 
-	if twerr.Code() != twirp.Internal {
-		t.Errorf("twirp ErrorCode expected to be %q, but found %q", twirp.Internal, twerr.Code())
+	if twerr.Code() != twirk.Internal {
+		t.Errorf("twirk ErrorCode expected to be %q, but found %q", twirk.Internal, twerr.Code())
 	}
 	if twerr.Msg() != "Internal service panic" {
-		t.Errorf("twirp client err has unexpected message %q, want %q", twerr.Msg(), "Internal service panic")
+		t.Errorf("twirk client err has unexpected message %q, want %q", twerr.Msg(), "Internal service panic")
 	}
 }
